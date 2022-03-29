@@ -38,12 +38,12 @@ public class Pawn implements Figure {
     }
 
 
-    /*
+    /**
     Gets called once the pawn moves to line 8. It calls one of three constructors of the possible figures,
     that can be chosen by the player which is then given the
     initial position of the square of the pawn that was promoted and assigns null values to
     both line and row values.
-     */
+     **/
     public void promote(){
 
     }

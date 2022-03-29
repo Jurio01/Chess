@@ -38,4 +38,12 @@ public class King implements Figure {
     public boolean putInCheck() {
         return false;
     }
+
+    /**
+     * Takes
+     * @param line &
+     * @param row
+     * and looks if this position is occupied by a rook that was not yet moved.
+     */
+    public void castle(int line, String row){}
 }
