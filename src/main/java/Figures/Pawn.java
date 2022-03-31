@@ -44,7 +44,7 @@ public class Pawn implements Figure {
     initial position of the square of the pawn that was promoted and assigns null values to
     both line and row values.
      **/
-    public void promote(){
+    public void promote(int switcher){
 
     }
 }

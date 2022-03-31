@@ -8,6 +8,7 @@ public class Bishop implements Figure{
     private ArrayList<String> possibleMoves;
     private boolean check;
 
+
     @Override
     public void move() {
 

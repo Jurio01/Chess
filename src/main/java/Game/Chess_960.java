@@ -7,8 +7,5 @@ public class Chess_960 extends Classic {
 
     }
 
-    public void end(){
-
-    }
 
 }
