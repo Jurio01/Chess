@@ -1,12 +1,9 @@
 package Figures;
 
-import java.util.ArrayList;
 
-public class Knight implements Figure{
-    private int line;
-    private String row;
-    private ArrayList<String> possibleMoves;
-    private boolean check;
+
+public class Knight extends Figure{
+
 
     @Override
     public void move() {

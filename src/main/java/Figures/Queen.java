@@ -2,11 +2,8 @@ package Figures;
 
 import java.util.ArrayList;
 
-public class Queen implements Figure{
-    private int line;
-    private String row;
-    private ArrayList<String> possibleMoves;
-    private boolean check;
+public class Queen extends Figure{
+
 
     @Override
     public void move() {

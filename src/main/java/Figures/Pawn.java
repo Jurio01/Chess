@@ -1,14 +1,12 @@
 package Figures;
 
-import java.util.ArrayList;
 
-public class Pawn implements Figure {
-    private int line;
-    private String row;
-    private ArrayList<String> possibleMoves;
+
+public class Pawn extends Figure {
+
     private boolean movedLast; //important for implementation of En passant
     private boolean firstMove; //for implementation of the initial 2 squares move
-    private boolean check;
+
 
     @Override
     public void move() {

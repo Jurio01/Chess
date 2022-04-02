@@ -2,12 +2,10 @@ package Figures;
 
 import java.util.ArrayList;
 
-public class King implements Figure {
-    private int line;
-    private String row;
-    private ArrayList<String> possibleMoves;
+public class King extends Figure {
+
     private boolean firstMove; //for implementation of castling
-    private boolean check;
+
 
     @Override
     public void move() {

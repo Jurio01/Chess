@@ -1,13 +1,8 @@
 package Figures;
 
-import java.util.ArrayList;
 
-public class Bishop implements Figure{
-    private int line;
-    private String row;
-    private ArrayList<String> possibleMoves;
-    private boolean check;
 
+public class Bishop extends Figure{
 
     @Override
     public void move() {
