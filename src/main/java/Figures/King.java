@@ -41,8 +41,8 @@ public class King extends Figure {
 
     /**
      * Takes
-     * @param tile
+     * @param rook
      * and looks if this position is occupied by a rook that was not yet moved.
      */
-    public void castle(Tile tile){}
+    public void castle(Rook rook){}
 }

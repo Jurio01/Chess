@@ -12,7 +12,7 @@ public class Tile {
     public void select(){
         this.selected = true;
     }
-    public void unSelect(){
+    public void unselect(){
         this.selected = false;
     }
     public boolean isOccupied(){

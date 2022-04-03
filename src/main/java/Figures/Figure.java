@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public abstract class Figure {
     Tile tile;
-    ArrayList<String> possibleMoves;
+    ArrayList<Tile> possibleMoves;
     boolean check;
     /**
     Move assigns new value to the position of the figure based on the possible
