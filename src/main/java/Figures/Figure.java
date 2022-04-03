@@ -5,9 +5,9 @@ import Game.Tile;
 import java.util.ArrayList;
 
 public abstract class Figure {
-    protected Tile tile;
-    protected ArrayList<String> possibleMoves;
-    protected boolean check;
+    Tile tile;
+    ArrayList<String> possibleMoves;
+    boolean check;
     /**
     Move assigns new value to the position of the figure based on the possible
     moves the figure can make. Move always calls canMove after it updates the figures position and putInCheck

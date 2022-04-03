@@ -1,5 +1,7 @@
 package Figures;
 
+import Game.Tile;
+
 import java.util.ArrayList;
 
 public class King extends Figure {
@@ -39,9 +41,8 @@ public class King extends Figure {
 
     /**
      * Takes
-     * @param line &
-     * @param row
+     * @param tile
      * and looks if this position is occupied by a rook that was not yet moved.
      */
-    public void castle(int line, String row){}
+    public void castle(Tile tile){}
 }
