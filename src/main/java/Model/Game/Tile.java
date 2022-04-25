@@ -4,9 +4,8 @@ import Model.Figures.Figure;
 
 public class Tile {
     private String color; //important for chess 960 bishop setUp
-    private int line;
-    private String row;
-    private Figure figure;
+    private int row;
+    private int colum;
     private boolean selected = false;
 
     public void select(){
@@ -15,8 +14,17 @@ public class Tile {
     public void unselect(){
         this.selected = false;
     }
+
     public boolean isOccupied(){
         return true;
+    }
+
+    public int getColum() {
+        return colum;
+    }
+
+    public int getRow() {
+        return row;
     }
 
 }

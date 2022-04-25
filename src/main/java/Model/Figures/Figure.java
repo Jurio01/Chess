@@ -8,6 +8,7 @@ public abstract class Figure {
     Tile tile;
     ArrayList<Tile> possibleMoves;
     boolean check;
+    int color;
     /**
     Move assigns new value to the position of the figure based on the possible
     moves the figure can make. Move always calls canMove after it updates the figures position and putInCheck
@@ -16,7 +17,7 @@ public abstract class Figure {
     abstract void move();
     /**
     Take is used after move is called on a position that is occupied by another piece. It calls on another method
-    called canBetaken witch returns boolean, see canBeTaken for further description. If canBeTaken returns True, take
+    called canBeTaken witch returns boolean, see canBeTaken for further description. If canBeTaken returns True, take
     removes the other piece standing on the position on which move is being called by setting its position to
     null value.
      **/

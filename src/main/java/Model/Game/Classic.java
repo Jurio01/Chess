@@ -3,7 +3,7 @@ package Model.Game;
 import java.util.ArrayList;
 
 public class Classic {
-    private ArrayList<Tile> tiles;
+    private static ArrayList<Tile> tiles;
     private Clock clock;
 
     public void start(){
@@ -15,5 +15,9 @@ public class Classic {
     }
     public void select(){
 
+    }
+
+    public static ArrayList<Tile> getTiles() {
+        return tiles;
     }
 }
