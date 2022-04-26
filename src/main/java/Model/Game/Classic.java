@@ -12,6 +12,7 @@ public class Classic {
 
     public void start() {
         boardSetUp();
+        figureSetUp();
         clock.start();
     }
 
@@ -50,6 +51,8 @@ public class Classic {
             } else {
                 color = 0;
             }
+            // I couldn't think of a way to make this stuff readable, but it works
+            // set up pawns
             if (i < 16) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 2 && color == 1 && !tile.isOccupied()) || tile.getRow() == 7 && color == 0 && !tile.isOccupied()) {
@@ -62,6 +65,7 @@ public class Classic {
                     }
                 }
             }
+            // set up rooks
             if (i < 20 && i > 15) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColum() == 1 || tile.getColum() == 8) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColum() == 1 || tile.getColum() == 8) && color == 0 && !tile.isOccupied()) {
@@ -74,6 +78,7 @@ public class Classic {
                     }
                 }
             }
+            // set up knights
             if (i < 24 && i > 19) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColum() == 2 || tile.getColum() == 7) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColum() == 2 || tile.getColum() == 7) && color == 0 && !tile.isOccupied()) {
@@ -83,10 +88,31 @@ public class Classic {
                     }
                 }
             }
+            // set up bishops
             if (i < 28 && i > 23){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColum() == 3 || tile.getColum() == 6) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColum() == 3 || tile.getColum() == 6) && color == 0 && !tile.isOccupied()) {
                         figure = new Bishop(tile, color);
+                        if (color == 1){ whiteFigures.add(figure);}
+                        else { blackFigures.add(figure);}
+                    }
+                }
+            }
+            // set up queens
+            if (i < 30 && i > 27){
+                for (Tile tile : this.tiles) {
+                    if ((tile.getRow() == 1 &&  tile.getColum() == 4 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColum() == 4 && color == 0 && !tile.isOccupied()) {
+                        figure = new Queen(tile, color);
+                        if (color == 1){ whiteFigures.add(figure);}
+                        else { blackFigures.add(figure);}
+                    }
+                }
+            }
+            // set up kings
+            if (i > 29){
+                for (Tile tile : this.tiles) {
+                    if ((tile.getRow() == 1 && tile.getColum() == 5 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColum() == 5 && color == 0 && !tile.isOccupied()) {
+                        figure = new King(tile, color);
                         if (color == 1){ whiteFigures.add(figure);}
                         else { blackFigures.add(figure);}
                     }

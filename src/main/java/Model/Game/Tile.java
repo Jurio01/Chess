@@ -43,6 +43,10 @@ public class Tile {
         return figure;
     }
 
+    public void setFigure(Figure figure){
+        this.figure = figure;
+    }
+
 
 
 }

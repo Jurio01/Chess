@@ -34,8 +34,7 @@ public class King extends Figure {
 
     @Override
     public void take(Tile tile) {
-        Figure figure = tile.getFigure();
-        figure = null;
+        tile.setFigure(null);
     }
 
     @Override
@@ -72,6 +71,7 @@ public class King extends Figure {
 
     @Override
     public boolean putInCheck() {
+        this.check = true;
         return false;
     }
 

@@ -1,5 +1,6 @@
 package Model.Figures;
 
+import Model.Game.Classic;
 import Model.Game.Tile;
 
 import java.util.ArrayList;
@@ -9,6 +10,13 @@ public abstract class Figure {
     ArrayList<Tile> possibleMoves;
     boolean check;
     int color;
+    Classic game;
+
+    public Figure(Tile tile, int color) {
+        this.tile = tile;
+        this.color = color;
+    }
+
     /**
     Move assigns new value to the position of the figure based on the possible
     moves the figure can make. Move always calls canMove after it updates the figures position and putInCheck
@@ -21,13 +29,14 @@ public abstract class Figure {
     removes the other piece standing on the position on which move is being called by setting its position to
     null value.
      **/
-    abstract void take();
+    abstract void take(Tile tile);
     /**
     * canBeTaken is called always when take is called. It returns True if a piece is of the opposite color and if
     * it can be taken in agreement with chess rules (can't take a piece if it puts your king in check), returns False
     * otherwise.
-     **/
-    abstract boolean canBeTaken();
+     *
+     * @param color*/
+    abstract boolean canBeTaken(int color);
     /**
     canMove is called always after at the end of the method move or after figure constructor is called. It updates
     the list of possible moves assigned to each figure.
