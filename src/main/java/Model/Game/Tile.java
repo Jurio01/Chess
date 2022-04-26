@@ -3,10 +3,18 @@ package Model.Game;
 import Model.Figures.Figure;
 
 public class Tile {
-    private String color; //important for chess 960 bishop setUp
-    private int row;
-    private int colum;
+    private final String color; //important for chess 960 bishop setUp
+    private final int row;
+    private final int colum;
     private boolean selected = false;
+    private Figure figure;
+
+    public Tile(String color, int row, int colum) {
+        this.color = color;
+        this.row = row;
+        this.colum = colum;
+    }
+
 
     public void select(){
         this.selected = true;
@@ -16,7 +24,7 @@ public class Tile {
     }
 
     public boolean isOccupied(){
-        return true;
+        return figure != null;
     }
 
     public int getColum() {
@@ -26,5 +34,15 @@ public class Tile {
     public int getRow() {
         return row;
     }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public Figure getFigure() {
+        return figure;
+    }
+
+
 
 }

@@ -1,10 +1,15 @@
 package Model.Figures;
 
+import Model.Game.Tile;
 import View.Figures.RookGUI;
 
 public class Rook extends Figure{
     RookGUI rookGUI;
     private boolean firstMove; //for implementation of castling
+
+    public Rook(Tile tile, int color) {
+        super(tile, color);
+    }
 
     @Override
     public void move() {
@@ -12,12 +17,13 @@ public class Rook extends Figure{
     }
 
     @Override
-    public void take() {
+    void take(Tile tile) {
 
     }
 
+
     @Override
-    public boolean canBeTaken() {
+    public boolean canBeTaken(int color) {
         return false;
     }
 

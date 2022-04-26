@@ -1,6 +1,7 @@
 package Model.Figures;
 
 
+import Model.Game.Tile;
 import View.Figures.PawnGUI;
 
 public class Pawn extends Figure {
@@ -8,17 +9,24 @@ public class Pawn extends Figure {
     private boolean movedLast; //important for implementation of En passant
     private boolean firstMove; //for implementation of the initial 2 squares move
 
+    public Pawn(Tile tile, int color) {
+        super(tile, color);
+    }
+
 
     @Override
     public void move() {
 
     }
+
     @Override
-    public void take() {
+    void take(Tile tile) {
 
     }
+
+
     @Override
-    public boolean canBeTaken() {
+    public boolean canBeTaken(int color) {
         return false;
     }
     @Override

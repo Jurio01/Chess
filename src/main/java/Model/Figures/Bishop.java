@@ -1,10 +1,15 @@
 package Model.Figures;
 
 
+import Model.Game.Tile;
 import View.Figures.BishopGUI;
 
 public class Bishop extends Figure{
     BishopGUI bishopGUI;
+
+    public Bishop(Tile tile, int color) {
+        super(tile, color);
+    }
 
     @Override
     public void move() {
@@ -12,12 +17,12 @@ public class Bishop extends Figure{
     }
 
     @Override
-    public void take() {
+    public void take(Tile tile) {
 
     }
 
     @Override
-    public boolean canBeTaken() {
+    public boolean canBeTaken(int color) {
         return false;
     }
 

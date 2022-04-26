@@ -1,10 +1,15 @@
 package Model.Figures;
 
 
+import Model.Game.Tile;
 import View.Figures.KingGUI;
 
 public class Knight extends Figure{
     KingGUI kingGUI;
+
+    public Knight(Tile tile, int color) {
+        super(tile, color);
+    }
 
 
     @Override
@@ -13,12 +18,12 @@ public class Knight extends Figure{
     }
 
     @Override
-    public void take() {
+    void take(Tile tile) {
 
     }
 
     @Override
-    public boolean canBeTaken() {
+    public boolean canBeTaken(int color) {
         return false;
     }
 

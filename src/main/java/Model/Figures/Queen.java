@@ -1,22 +1,29 @@
 package Model.Figures;
 
+import Model.Game.Tile;
 import View.Figures.QueenGUI;
 
 public class Queen extends Figure{
 
     QueenGUI queenGUI;
+
+    public Queen(Tile tile, int color) {
+        super(tile, color);
+    }
+
     @Override
     public void move() {
 
     }
 
     @Override
-    public void take() {
+    void take(Tile tile) {
 
     }
 
+
     @Override
-    public boolean canBeTaken() {
+    public boolean canBeTaken(int color) {
         return false;
     }
 
