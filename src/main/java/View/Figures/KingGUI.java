@@ -1,6 +1,6 @@
 package View.Figures;
 
-import Model.Figures.King;
+import Model.Pieces.King;
 
 public class KingGUI {
     King king;

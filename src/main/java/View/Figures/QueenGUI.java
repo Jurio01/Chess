@@ -1,6 +1,6 @@
 package View.Figures;
 
-import Model.Figures.Queen;
+import Model.Pieces.Queen;
 
 public class QueenGUI {
     Queen queen;

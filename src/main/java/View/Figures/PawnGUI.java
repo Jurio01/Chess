@@ -1,6 +1,6 @@
 package View.Figures;
 
-import Model.Figures.Pawn;
+import Model.Pieces.Pawn;
 
 public class PawnGUI {
     Pawn pawn;

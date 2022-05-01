@@ -1,13 +1,13 @@
-package Model.Figures;
+package Model.Pieces;
 
 import Model.Game.Tile;
-import View.Figures.RookGUI;
+import View.Figures.QueenGUI;
 
-public class Rook extends Figure{
-    RookGUI rookGUI;
-    private boolean firstMove; //for implementation of castling
+public class Queen extends Piece {
 
-    public Rook(Tile tile, int color) {
+    QueenGUI queenGUI;
+
+    public Queen(Tile tile, int color) {
         super(tile, color);
     }
 

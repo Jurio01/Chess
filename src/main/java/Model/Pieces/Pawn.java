@@ -1,10 +1,10 @@
-package Model.Figures;
+package Model.Pieces;
 
 
 import Model.Game.Tile;
 import View.Figures.PawnGUI;
 
-public class Pawn extends Figure {
+public class Pawn extends Piece {
     PawnGUI pawnGUI;
     private boolean movedLast; //important for implementation of En passant
     private boolean firstMove; //for implementation of the initial 2 squares move

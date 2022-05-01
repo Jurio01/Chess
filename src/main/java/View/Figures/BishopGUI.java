@@ -1,6 +1,6 @@
 package View.Figures;
 
-import Model.Figures.Bishop;
+import Model.Pieces.Bishop;
 
 public class BishopGUI {
     Bishop bishop;

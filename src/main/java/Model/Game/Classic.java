@@ -1,14 +1,14 @@
 package Model.Game;
 
-import Model.Figures.*;
+import Model.Pieces.*;
 
 import java.util.ArrayList;
 
 public class Classic {
     protected ArrayList<Tile> tiles;
     protected Clock clock;
-    protected ArrayList<Figure> whiteFigures;
-    protected ArrayList<Figure> blackFigures;
+    protected ArrayList<Piece> whitePieces;
+    protected ArrayList<Piece> blackPieces;
 
     public void start() {
         boardSetUp();
@@ -20,8 +20,8 @@ public class Classic {
 
     }
 
-    public void select() {
-
+    public void select(Tile tile) {
+        tile.select();
     }
 
     public ArrayList<Tile> getTiles() {
@@ -44,7 +44,7 @@ public class Classic {
 
     public void figureSetUp() {
         for (int i = 0; i < 32; i++) {
-            Figure figure;
+            Piece piece;
             int color;
             if (i % 2 == 0) {
                 color = 1;
@@ -56,11 +56,11 @@ public class Classic {
             if (i < 16) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 2 && color == 1 && !tile.isOccupied()) || tile.getRow() == 7 && color == 0 && !tile.isOccupied()) {
-                        figure = new Pawn(tile, color);
+                        piece = new Pawn(tile, color);
                         if (color == 1) {
-                            whiteFigures.add(figure);
+                            whitePieces.add(piece);
                         } else {
-                            blackFigures.add(figure);
+                            blackPieces.add(piece);
                         }
                     }
                 }
@@ -69,11 +69,11 @@ public class Classic {
             if (i < 20 && i > 15) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColum() == 1 || tile.getColum() == 8) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColum() == 1 || tile.getColum() == 8) && color == 0 && !tile.isOccupied()) {
-                        figure = new Rook(tile, color);
+                        piece = new Rook(tile, color);
                         if (color == 1) {
-                            whiteFigures.add(figure);
+                            whitePieces.add(piece);
                         } else {
-                            blackFigures.add(figure);
+                            blackPieces.add(piece);
                         }
                     }
                 }
@@ -82,9 +82,9 @@ public class Classic {
             if (i < 24 && i > 19) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColum() == 2 || tile.getColum() == 7) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColum() == 2 || tile.getColum() == 7) && color == 0 && !tile.isOccupied()) {
-                        figure = new Knight(tile, color);
-                        if (color == 1){ whiteFigures.add(figure);}
-                        else { blackFigures.add(figure);}
+                        piece = new Knight(tile, color);
+                        if (color == 1){ whitePieces.add(piece);}
+                        else { blackPieces.add(piece);}
                     }
                 }
             }
@@ -92,9 +92,9 @@ public class Classic {
             if (i < 28 && i > 23){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColum() == 3 || tile.getColum() == 6) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColum() == 3 || tile.getColum() == 6) && color == 0 && !tile.isOccupied()) {
-                        figure = new Bishop(tile, color);
-                        if (color == 1){ whiteFigures.add(figure);}
-                        else { blackFigures.add(figure);}
+                        piece = new Bishop(tile, color);
+                        if (color == 1){ whitePieces.add(piece);}
+                        else { blackPieces.add(piece);}
                     }
                 }
             }
@@ -102,9 +102,9 @@ public class Classic {
             if (i < 30 && i > 27){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 &&  tile.getColum() == 4 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColum() == 4 && color == 0 && !tile.isOccupied()) {
-                        figure = new Queen(tile, color);
-                        if (color == 1){ whiteFigures.add(figure);}
-                        else { blackFigures.add(figure);}
+                        piece = new Queen(tile, color);
+                        if (color == 1){ whitePieces.add(piece);}
+                        else { blackPieces.add(piece);}
                     }
                 }
             }
@@ -112,12 +112,19 @@ public class Classic {
             if (i > 29){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && tile.getColum() == 5 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColum() == 5 && color == 0 && !tile.isOccupied()) {
-                        figure = new King(tile, color);
-                        if (color == 1){ whiteFigures.add(figure);}
-                        else { blackFigures.add(figure);}
+                        piece = new King(tile, color);
+                        if (color == 1){ whitePieces.add(piece);}
+                        else { blackPieces.add(piece);}
                     }
                 }
             }
         }
+    }
+    public ArrayList<Piece> getWhiteFigures() {
+        return whitePieces;
+    }
+
+    public ArrayList<Piece> getBlackFigures() {
+        return blackPieces;
     }
 }

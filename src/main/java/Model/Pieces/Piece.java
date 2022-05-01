@@ -1,18 +1,18 @@
-package Model.Figures;
+package Model.Pieces;
 
 import Model.Game.Classic;
 import Model.Game.Tile;
 
 import java.util.ArrayList;
 
-public abstract class Figure {
+public abstract class Piece {
     Tile tile;
     ArrayList<Tile> possibleMoves;
     boolean check;
     int color;
     Classic game;
 
-    public Figure(Tile tile, int color) {
+    public Piece(Tile tile, int color) {
         this.tile = tile;
         this.color = color;
     }

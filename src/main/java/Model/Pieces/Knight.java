@@ -1,10 +1,10 @@
-package Model.Figures;
+package Model.Pieces;
 
 
 import Model.Game.Tile;
 import View.Figures.KingGUI;
 
-public class Knight extends Figure{
+public class Knight extends Piece {
     KingGUI kingGUI;
 
     public Knight(Tile tile, int color) {

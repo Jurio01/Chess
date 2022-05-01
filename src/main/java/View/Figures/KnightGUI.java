@@ -1,6 +1,6 @@
 package View.Figures;
 
-import Model.Figures.Knight;
+import Model.Pieces.Knight;
 
 public class KnightGUI {
     Knight knight;

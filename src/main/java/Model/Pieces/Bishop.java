@@ -1,13 +1,13 @@
-package Model.Figures;
+package Model.Pieces;
+
 
 import Model.Game.Tile;
-import View.Figures.QueenGUI;
+import View.Figures.BishopGUI;
 
-public class Queen extends Figure{
+public class Bishop extends Piece {
+    BishopGUI bishopGUI;
 
-    QueenGUI queenGUI;
-
-    public Queen(Tile tile, int color) {
+    public Bishop(Tile tile, int color) {
         super(tile, color);
     }
 
@@ -17,10 +17,9 @@ public class Queen extends Figure{
     }
 
     @Override
-    void take(Tile tile) {
+    public void take(Tile tile) {
 
     }
-
 
     @Override
     public boolean canBeTaken(int color) {
@@ -41,5 +40,4 @@ public class Queen extends Figure{
     public boolean putInCheck() {
         return false;
     }
-
 }

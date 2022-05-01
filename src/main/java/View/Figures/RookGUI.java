@@ -1,6 +1,6 @@
 package View.Figures;
 
-import Model.Figures.Rook;
+import Model.Pieces.Rook;
 
 public class RookGUI {
     Rook rook;
