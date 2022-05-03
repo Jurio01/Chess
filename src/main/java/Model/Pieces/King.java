@@ -34,18 +34,6 @@ public class King extends Piece {
     }
 
     @Override
-    public void take(Tile tile) {
-        if (this.color == 1){
-            game.getBlackFigures().remove(tile.getFigure());
-        }
-        else {
-            game.getWhiteFigures().remove(tile.getFigure());
-        }
-        tile.setPiece(null);
-
-    }
-
-    @Override
     public boolean canBeTaken(int color) {
         if (this.color == color){
             return false;
@@ -56,16 +44,16 @@ public class King extends Piece {
     @Override
     public void canMove() {
         int row = tile.getRow();
-        int colum = tile.getColum();
+        int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
         for (Tile tile: tiles){
             if (tile.getRow() == row){
-                if (tile.getColum() == colum + 1 || tile.getColum() == colum - 1){
+                if (tile.getColumn() == column + 1 || tile.getColumn() == column - 1){
                     possibleMoves.add(tile);
                 }
             }
             if (tile.getRow() == row - 1 || tile.getRow() == row + 1){
-                if (tile.getColum() == colum || tile.getColum() == colum + 1 || tile.getColum() == colum - 1){
+                if (tile.getColumn() == column || tile.getColumn() == column + 1 || tile.getColumn() == column - 1){
                     possibleMoves.add(tile);
                 }
             }
@@ -90,10 +78,10 @@ public class King extends Piece {
      */
     public void castle(Rook rook){
         if (firstMove && rook.isFirstMove()){
-            if (rook.tile.getColum() == 8){
+            if (rook.tile.getColumn() == 8){
                 if (this.color == 1){
                     for (Tile tile: game.getTiles()) {
-                        if (tile.getColum() == 7 && tile.getRow() == 1) {
+                        if (tile.getColumn() == 7 && tile.getRow() == 1) {
                             possibleMoves.add(tile);
                             break;
                         }
@@ -101,17 +89,17 @@ public class King extends Piece {
                 }
                 if (this.color == 0){
                     for (Tile tile : game.getTiles()){
-                        if (tile.getColum() == 7 && tile.getRow() == 8){
+                        if (tile.getColumn() == 7 && tile.getRow() == 8){
                             possibleMoves.add(tile);
                             break;
                         }
                     }
                 }
             }
-            if (rook.tile.getColum() == 1){
+            if (rook.tile.getColumn() == 1){
                 if (this.color == 1){
                     for (Tile tile: game.getTiles()){
-                        if (tile.getColum() == 2 && tile.getRow() == 1){
+                        if (tile.getColumn() == 2 && tile.getRow() == 1){
                             possibleMoves.add(tile);
                             break;
                         }
@@ -119,7 +107,7 @@ public class King extends Piece {
                 }
                 if (this.color == 0){
                     for (Tile tile: game.getTiles()){
-                        if (tile.getColum() == 2 && tile.getRow() == 8){
+                        if (tile.getColumn() == 2 && tile.getRow() == 8){
                             possibleMoves.add(tile);
                             break;
                         }

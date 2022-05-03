@@ -5,14 +5,14 @@ import Model.Pieces.Piece;
 public class Tile {
     private final String color; //important for chess 960 bishop setUp
     private final int row;
-    private final int colum;
+    private final int column;
     private boolean selected = false;
     private Piece piece;
 
-    public Tile(String color, int row, int colum) {
+    public Tile(String color, int row, int column) {
         this.color = color;
         this.row = row;
-        this.colum = colum;
+        this.column = column;
     }
 
 
@@ -27,8 +27,8 @@ public class Tile {
         return piece != null;
     }
 
-    public int getColum() {
-        return colum;
+    public int getColumn() {
+        return column;
     }
 
     public int getRow() {

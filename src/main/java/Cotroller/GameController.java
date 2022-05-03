@@ -8,10 +8,11 @@ public class GameController {
     Classic classic;
     Chess960 chess960;
     Board board;
-    GameController(Classic classic){
+    public GameController(Classic classic){
         this.classic = classic;
     }
-    GameController(Chess960 chess960){
+    public GameController(Chess960 chess960){
         this.chess960 = chess960;
     }
+
 }

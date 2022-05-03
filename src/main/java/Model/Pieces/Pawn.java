@@ -4,6 +4,8 @@ package Model.Pieces;
 import Model.Game.Tile;
 import View.Figures.PawnGUI;
 
+import java.util.ArrayList;
+
 public class Pawn extends Piece {
     PawnGUI pawnGUI;
     private boolean movedLast; //important for implementation of En passant
@@ -11,6 +13,9 @@ public class Pawn extends Piece {
 
     public Pawn(Tile tile, int color) {
         super(tile, color);
+        movedLast = false;
+        firstMove = true;
+        pawnGUI = new PawnGUI();
     }
 
 
@@ -20,18 +25,27 @@ public class Pawn extends Piece {
     }
 
     @Override
-    void take(Tile tile) {
-
-    }
-
-
-    @Override
     public boolean canBeTaken(int color) {
         return false;
     }
     @Override
     public void canMove() {
-
+        int row = tile.getRow();
+        int column = tile.getColumn();
+        ArrayList<Tile> tiles = game.getTiles();
+        for (Tile tile: tiles){
+            if (tile.getRow() == row + 1 && tile.getColumn() == column){
+                possibleMoves.add(tile);
+            }
+            if (firstMove){
+                if (tile.getRow()== row + 2 && tile.getColumn() == column){
+                    possibleMoves.add(tile);
+                }
+            }
+            if (tile.getRow() == row + 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.isOccupied()){
+                possibleMoves.add(tile);
+            }
+        }
     }
 
     @Override
