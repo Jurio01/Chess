@@ -1,6 +1,7 @@
 package model.pieces;
 
 
+import model.game.Classic;
 import model.game.Tile;
 import view.pieces.BishopGUI;
 
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 public class Bishop extends Piece {
     BishopGUI bishopGUI;
 
-    public Bishop(Tile tile, int color) {
-        super(tile, color);
+    public Bishop(Tile tile, int color, Classic game) {
+        super(tile, color, game);
         bishopGUI = new BishopGUI();
     }
 

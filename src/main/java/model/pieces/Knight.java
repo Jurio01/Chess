@@ -1,6 +1,7 @@
 package model.pieces;
 
 
+import model.game.Classic;
 import model.game.Tile;
 import view.pieces.KingGUI;
 
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 public class Knight extends Piece {
     KingGUI kingGUI;
 
-    public Knight(Tile tile, int color) {
-        super(tile, color);
+    public Knight(Tile tile, int color, Classic game) {
+        super(tile, color, game);
     }
 
     @Override

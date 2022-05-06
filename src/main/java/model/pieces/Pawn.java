@@ -1,6 +1,7 @@
 package model.pieces;
 
 
+import model.game.Classic;
 import model.game.Tile;
 import view.pieces.PawnGUI;
 
@@ -11,8 +12,8 @@ public class Pawn extends Piece {
     private boolean movedLast; //important for implementation of En passant
     private boolean firstMove; //for implementation of the initial 2 squares move
 
-    public Pawn(Tile tile, int color) {
-        super(tile, color);
+    public Pawn(Tile tile, int color, Classic game) {
+        super(tile, color, game);
         movedLast = false;
         firstMove = true;
         pawnGUI = new PawnGUI();

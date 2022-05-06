@@ -10,12 +10,13 @@ import java.awt.event.MouseListener;
 
 public class Board extends JFrame {
     GameController controller;
+    JPanel panel;
 
     public Board(GameController controller){
         this.controller = controller;
     }
     public void init(){
-        this.setBounds(10,10,528,551);
+        this.setBounds(8,8,528,551);
         final JPanel panel = new JPanel(){
             @Override
             public void paint(Graphics g){
@@ -37,6 +38,8 @@ public class Board extends JFrame {
         };
         MouseListener listener = new BoardClicked(controller);
         this.add(panel);
+        this.panel = panel;
+        controller.getGame().getWhiteKing().getKingGUI().projectImage();
 
         this.addMouseListener(listener);
 
@@ -45,5 +48,8 @@ public class Board extends JFrame {
 
 
 
+    }
+    public JPanel getPanel(){
+        return this.panel;
     }
 }

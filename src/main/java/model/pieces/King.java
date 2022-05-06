@@ -1,4 +1,5 @@
 package model.pieces;
+import model.game.Classic;
 import model.game.Tile;
 import view.pieces.KingGUI;
 import java.util.ArrayList;
@@ -7,10 +8,10 @@ public class King extends Piece {
     KingGUI kingGUI;
     private boolean firstMove; //for implementation of castling
 
-    public King(Tile tile, int color) {
-        super(tile, color);
+    public King(Tile tile, int color, Classic game) {
+        super(tile, color, game);
         firstMove = true;
-        kingGUI = new KingGUI();
+        kingGUI = new KingGUI(this);
     }
 
 
@@ -115,5 +116,9 @@ public class King extends Piece {
                 }
             }
         }
+    }
+
+    public KingGUI getKingGUI(){
+        return this.kingGUI;
     }
 }

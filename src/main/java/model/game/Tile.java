@@ -8,8 +8,6 @@ public class Tile {
     private final int column;
     private boolean selected = false;
     private Piece piece;
-    private int screenX;
-    private int ScreenY;
 
     public Tile(String color, int row, int column) {
         this.color = color;

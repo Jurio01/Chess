@@ -1,5 +1,6 @@
 package model.pieces;
 
+import model.game.Classic;
 import model.game.Tile;
 import view.pieces.QueenGUI;
 
@@ -9,8 +10,8 @@ public class Queen extends Piece {
 
     QueenGUI queenGUI;
 
-    public Queen(Tile tile, int color) {
-        super(tile, color);
+    public Queen(Tile tile, int color, Classic game) {
+        super(tile, color, game);
         queenGUI = new QueenGUI();
     }
 

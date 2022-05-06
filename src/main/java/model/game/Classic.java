@@ -13,6 +13,8 @@ public class Classic {
     protected King whiteKing;
     protected King blackKing;
     GameController controller;
+    Tile tileWithPiece;
+    Tile tileToMove;
 
     public void start() {
         boardSetUp();
@@ -34,6 +36,12 @@ public class Classic {
 
     public void select(Tile tile) {
         tile.select();
+        if (tile.getFigure() == null){
+            tileToMove = tile;
+        }
+        if (tile.getFigure() != null){
+            tileWithPiece = tile;
+        }
     }
 
     public ArrayList<Tile> getTiles() {
@@ -71,7 +79,7 @@ public class Classic {
             if (i < 16) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 2 && color == 1 && !tile.isOccupied()) || tile.getRow() == 7 && color == 0 && !tile.isOccupied()) {
-                        piece = new Pawn(tile, color);
+                        piece = new Pawn(tile, color, this);
                         if (color == 1) {
                             whitePieces.add(piece);
                         } else {
@@ -85,7 +93,7 @@ public class Classic {
             if (i < 20 && i > 15) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColumn() == 1 || tile.getColumn() == 8) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColumn() == 1 || tile.getColumn() == 8) && color == 0 && !tile.isOccupied()) {
-                        piece = new Rook(tile, color);
+                        piece = new Rook(tile, color, this);
                         if (color == 1) {
                             whitePieces.add(piece);
                         } else {
@@ -99,7 +107,7 @@ public class Classic {
             if (i < 24 && i > 19) {
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColumn() == 2 || tile.getColumn() == 7) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColumn() == 2 || tile.getColumn() == 7) && color == 0 && !tile.isOccupied()) {
-                        piece = new Knight(tile, color);
+                        piece = new Knight(tile, color,this);
                         if (color == 1){
                             whitePieces.add(piece);
                         }
@@ -114,7 +122,7 @@ public class Classic {
             if (i < 28 && i > 23){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && (tile.getColumn() == 3 || tile.getColumn() == 6) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColumn() == 3 || tile.getColumn() == 6) && color == 0 && !tile.isOccupied()) {
-                        piece = new Bishop(tile, color);
+                        piece = new Bishop(tile, color,this);
                         if (color == 1){ whitePieces.add(piece);}
                         else { blackPieces.add(piece);}
                         break;
@@ -125,7 +133,7 @@ public class Classic {
             if (i < 30 && i > 27){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 &&  tile.getColumn() == 4 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColumn() == 4 && color == 0 && !tile.isOccupied()) {
-                        piece = new Queen(tile, color);
+                        piece = new Queen(tile, color,this);
                         if (color == 1){ whitePieces.add(piece);}
                         else { blackPieces.add(piece);}
                         break;
@@ -136,7 +144,7 @@ public class Classic {
             if (i > 29){
                 for (Tile tile : this.tiles) {
                     if ((tile.getRow() == 1 && tile.getColumn() == 5 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColumn() == 5 && color == 0 && !tile.isOccupied()) {
-                        piece = new King(tile, color);
+                        piece = new King(tile, color,this);
                         if (color == 1){ whitePieces.add(piece); whiteKing = (King) piece;}
                         else { blackPieces.add(piece); blackKing = (King) piece;}
                         break;
@@ -156,4 +164,8 @@ public class Classic {
     public King getWhiteKing(){return whiteKing;}
 
     public King getBlackKing(){return blackKing;}
+
+    public GameController getController() {
+        return controller;
+    }
 }

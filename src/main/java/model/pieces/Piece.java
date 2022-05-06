@@ -14,9 +14,10 @@ public abstract class Piece {
     boolean threat; //to make it easier to find in an array of figures and to make it clear witch piece is threat
                     //to the king so the other player may react accordingly
 
-    public Piece(Tile tile, int color) {
+    public Piece(Tile tile, int color, Classic game) {
         this.tile = tile;
         this.color = color;
+        this.game = game;
     }
 
     /**
@@ -98,4 +99,28 @@ public abstract class Piece {
     are equal to the position of the king it returns True, returns False otherwise.
      **/
     abstract boolean putInCheck();
+
+    public Tile getTile() {
+        return tile;
+    }
+
+    public ArrayList<Tile> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public Classic getGame() {
+        return game;
+    }
+
+    public boolean isThreat() {
+        return threat;
+    }
 }

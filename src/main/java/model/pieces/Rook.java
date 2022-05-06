@@ -1,5 +1,6 @@
 package model.pieces;
 
+import model.game.Classic;
 import model.game.Tile;
 import view.pieces.RookGUI;
 
@@ -10,8 +11,8 @@ public class Rook extends Piece {
     RookGUI rookGUI;
     private boolean firstMove; //for implementation of castling
 
-    public Rook(Tile tile, int color) {
-        super(tile, color);
+    public Rook(Tile tile, int color, Classic game) {
+        super(tile, color, game);
         firstMove = true;
         rookGUI = new RookGUI();
     }
