@@ -2,17 +2,13 @@ package model.pieces;
 
 import model.game.Classic;
 import model.game.Tile;
-import view.pieces.QueenGUI;
 
 import java.util.ArrayList;
 
 public class Queen extends Piece {
 
-    QueenGUI queenGUI;
-
     public Queen(Tile tile, int color, Classic game) {
-        super(tile, color, game);
-        queenGUI = new QueenGUI();
+        super(tile, color, game, (color == 1) ? "qw.png" : "qb.png");
     }
 
     @Override

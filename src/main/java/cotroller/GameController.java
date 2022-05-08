@@ -3,7 +3,7 @@ package cotroller;
 import model.game.Chess960;
 import model.game.Classic;
 import model.game.Tile;
-import view.Board;
+import view.boardViews.Board;
 
 import java.util.ArrayList;
 

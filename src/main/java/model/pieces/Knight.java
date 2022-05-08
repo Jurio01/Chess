@@ -3,7 +3,6 @@ package model.pieces;
 
 import model.game.Classic;
 import model.game.Tile;
-import view.pieces.KingGUI;
 
 import java.util.ArrayList;
 

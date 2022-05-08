@@ -33,36 +33,35 @@ public class Bishop extends Piece {
         //basically go through all the possible increments/decrements of its current tile column and row and check if
         //such a tile exists. If it does, it goes to the possible moves list and if it is occupied everything behind
         //it is blocked.
-        for (int i = 1; i < 8; i++){
-            for (Tile tile: tiles){
-                if (tile.getRow() == row + i && tile.getColumn() == column + i && !firstBlock){
+        for (int i = 1; i < 8; i++) {
+            for (Tile tile : tiles) {
+                if (tile.getRow() == row + i && tile.getColumn() == column + i && !firstBlock) {
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    if (tile.isOccupied()) {
                         firstBlock = true;
                     }
                 }
-                if (tile.getRow() == row + i && tile.getColumn() == column - i && !secondBlock){
+                if (tile.getRow() == row + i && tile.getColumn() == column - i && !secondBlock) {
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    if (tile.isOccupied()) {
                         secondBlock = true;
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column + i && !thirdBlock){
+                if (tile.getRow() == row - i && tile.getColumn() == column + i && !thirdBlock) {
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    if (tile.isOccupied()) {
                         thirdBlock = true;
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column - i && !fourthBlock){
+                if (tile.getRow() == row - i && tile.getColumn() == column - i && !fourthBlock) {
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    if (tile.isOccupied()) {
                         fourthBlock = true;
                     }
                 }
             }
         }
     }
-
 
 
     @Override
