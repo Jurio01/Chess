@@ -17,6 +17,7 @@ public class BoardClicked implements MouseListener {
         controller.setX(x);
         controller.setY(y);
         controller.findTile();
+        controller.getBoard().getPanel().repaint();
     }
 
     @Override

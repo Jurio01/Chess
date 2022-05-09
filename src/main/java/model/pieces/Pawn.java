@@ -34,17 +34,19 @@ public class Pawn extends Piece {
         int row = tile.getRow();
         int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
-        for (Tile tile: tiles){
-            if (tile.getRow() == row + 1 && tile.getColumn() == column){
-                possibleMoves.add(tile);
-            }
-            if (firstMove){
-                if (tile.getRow()== row + 2 && tile.getColumn() == column){
+        if (color == 1){
+            for (Tile tile: tiles){
+                if (tile.getRow() == row + 1 && tile.getColumn() == column){
                     possibleMoves.add(tile);
                 }
-            }
-            if (tile.getRow() == row + 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.isOccupied()){
-                possibleMoves.add(tile);
+                if (firstMove){
+                    if (tile.getRow()== row + 2 && tile.getColumn() == column){
+                        possibleMoves.add(tile);
+                    }
+                }
+                if (tile.getRow() == row + 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.isOccupied()){
+                    possibleMoves.add(tile);
+                }
             }
         }
     }

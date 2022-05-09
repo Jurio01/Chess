@@ -26,16 +26,21 @@ public abstract class Piece {
     after it.
      **/
     public void move(){
-        for (Tile tile: game.getTiles()){
+        this.canMove();
+        for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
-                if (tile.getFigure() == null){
+                if (tile.getPiece() == null){
+                    this.tile.setPiece(null);
                     this.tile = tile;
+                    this.tile.setPiece(this);
+                    this.canMove();
                 }
-                else {
-                    if (tile.getFigure().canBeTaken(color)){
+                if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
+                    if (tile.getPiece().canBeTaken(color)){
                         take(tile);
+                        this.tile.setPiece(null);
                         this.tile = tile;
-                        tile.setPiece(this);
+                        this.tile.setPiece(this);
                     }
                 }
             }
@@ -49,10 +54,10 @@ public abstract class Piece {
      **/
     public void take(Tile tile) {
         if (this.color == 1){
-            game.getBlackFigures().remove(tile.getFigure());
+            game.getBlackFigures().remove(tile.getPiece());
         }
         else {
-            game.getWhiteFigures().remove(tile.getFigure());
+            game.getWhiteFigures().remove(tile.getPiece());
         }
         tile.setPiece(null);
     }

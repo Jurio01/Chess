@@ -18,11 +18,11 @@ public class King extends Piece {
     public void move() {
         for (Tile tile : game.getTiles()) {
             if (tile.isSelected() && tile != this.tile) {
-                if (tile.getFigure() == null) {
+                if (tile.getPiece() == null) {
                     this.tile = tile;
                     firstMove = false;
                 } else {
-                    if (tile.getFigure().canBeTaken(color)) {
+                    if (tile.getPiece().canBeTaken(color)) {
                         take(tile);
                         this.tile = tile;
                         tile.setPiece(this);

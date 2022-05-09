@@ -15,10 +15,10 @@ public class Tile {
         this.column = column;
     }
 
-
     public void select(){
         this.selected = true;
     }
+
     public void unselect(){
         this.selected = false;
     }
@@ -39,7 +39,7 @@ public class Tile {
         return selected;
     }
 
-    public Piece getFigure() {
+    public Piece getPiece() {
         return piece;
     }
 

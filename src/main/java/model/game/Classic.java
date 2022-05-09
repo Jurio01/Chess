@@ -12,9 +12,9 @@ public class Classic {
     protected ArrayList<Piece> blackPieces;
     protected King whiteKing;
     protected King blackKing;
-    GameController controller;
-    Tile tileWithPiece;
-    Tile tileToMove;
+    protected GameController controller;
+    protected Tile tileWithPiece;
+    protected Tile tileToMove;
 
     public void start() {
         boardSetUp();
@@ -35,12 +35,22 @@ public class Classic {
     }
 
     public void select(Tile tile) {
-        tile.select();
-        if (tile.getFigure() == null){
+        if (tile.getPiece() == null){
+            if (tileToMove != null){
+                tileToMove.unselect();
+            }
             tileToMove = tile;
+            tileToMove.select();
         }
-        if (tile.getFigure() != null){
+        if (tile.getPiece() != null){
+            if (tileWithPiece != null){
+                tileWithPiece.unselect();
+            }
             tileWithPiece = tile;
+            tileWithPiece.select();
+        }
+        if (tileWithPiece != null && tileToMove != null){
+            tileWithPiece.getPiece().move();
         }
     }
 
@@ -161,9 +171,13 @@ public class Classic {
         return blackPieces;
     }
 
-    public King getWhiteKing(){return whiteKing;}
+    public King getWhiteKing(){
+        return whiteKing;
+    }
 
-    public King getBlackKing(){return blackKing;}
+    public King getBlackKing(){
+        return blackKing;
+    }
 
     public GameController getController() {
         return controller;

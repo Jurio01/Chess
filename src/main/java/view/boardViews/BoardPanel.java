@@ -29,103 +29,20 @@ public class BoardPanel extends JPanel {
             }
             white = !white;
         }
-        int y;
-        int x = 0;
-        boolean firstInstance = true;
-        for (Piece piece: board.controller.getGame().getWhiteFigures()){
-            if (piece instanceof Pawn){
-                y = 6 * 64;
-            } else {
-              y = 7 * 64;
-            }
-            if (x > 512){
-                x = 0;
-            }
-            if (piece instanceof Rook) {
-                if (firstInstance) {
-                    x = 0;
-                } else {
-                    x = 7 * 64;
-                }
-                firstInstance = !firstInstance;
-            }
-            if (piece instanceof Knight){
-                if (firstInstance){
-                    x = 64;
-                } else {
-                    x = 6 * 64;
-                }
-                firstInstance =! firstInstance;
-            }
-            if (piece instanceof Bishop){
-                if (firstInstance){
-                    x = 2 * 64;
-                } else {
-                    x = 5 * 64;
-                }
-                firstInstance =! firstInstance;
-            }
-            if (piece instanceof Queen){
-                x = 3 * 64;
-            }
-            if (piece instanceof King){
-                x = 4 * 64;
-            }
+        for (Piece piece: board.getController().getGame().getWhiteFigures()){
             String imageName = piece.getImageName();
             try {
                 Image image = ImageIO.read(getClass().getResource("/png/" + imageName));
-                g.drawImage(image.getScaledInstance(64,64,Image.SCALE_SMOOTH),x,y,null);
-                x += 64;
+                g.drawImage(image.getScaledInstance(64,64,Image.SCALE_SMOOTH),(piece.getTile().getColumn() - 1) * 64, (piece.getTile().getRow() - 8) * (-1) * 64,null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        firstInstance = true;
-        x = 0;
-        for (Piece piece: board.controller.getGame().getBlackFigures()){
-            if (piece instanceof Pawn){
-                y = 64;
-            } else {
-                y = 0;
-            }
-            if (x > 512){
-                x = 0;
-            }
-            if (piece instanceof Rook) {
-                if (firstInstance) {
-                    x = 0;
-                } else {
-                    x = 7 * 64;
-                }
-                firstInstance = !firstInstance;
-            }
-            if (piece instanceof Knight){
-                if (firstInstance){
-                    x = 64;
-                } else {
-                    x = 6 * 64;
-                }
-                firstInstance =! firstInstance;
-            }
-            if (piece instanceof Bishop){
-                if (firstInstance){
-                    x = 2 * 64;
-                } else {
-                    x = 5 * 64;
-                }
-                firstInstance =! firstInstance;
-            }
-            if (piece instanceof Queen){
-                x = 3 * 64;
-            }
-            if (piece instanceof King){
-                x = 4 * 64;
-            }
+        for (Piece piece: board.getController().getGame().getBlackFigures()){
             String imageName = piece.getImageName();
             try {
                 Image image = ImageIO.read(getClass().getResource("/png/" + imageName));
-                g.drawImage(image.getScaledInstance(64,64,Image.SCALE_SMOOTH),x,y,null);
-                x += 64;
+                g.drawImage(image.getScaledInstance(64,64,Image.SCALE_SMOOTH),(piece.getTile().getColumn() - 1) * 64, (piece.getTile().getRow() - 8) * (-1) * 64,null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
