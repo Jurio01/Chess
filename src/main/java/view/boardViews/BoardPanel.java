@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.IOException;
 
 public class BoardPanel extends JPanel {
-    private Board board;
+    private final Board board;
     public BoardPanel(Board board){
         this.board = board;
     }

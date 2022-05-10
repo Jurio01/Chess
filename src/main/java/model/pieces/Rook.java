@@ -14,15 +14,10 @@ public class Rook extends Piece {
     }
 
     @Override
-    public void move() {
-
+    public boolean move() {
+        return true;
     }
 
-
-    @Override
-    public boolean canBeTaken(int color) {
-        return false;
-    }
 
     @Override
     public void canMove() {

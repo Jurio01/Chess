@@ -8,6 +8,7 @@ public class Tile {
     private final int column;
     private boolean selected = false;
     private Piece piece;
+    private boolean enPassantMove;
 
     public Tile(String color, int row, int column) {
         this.color = color;
@@ -47,6 +48,11 @@ public class Tile {
         this.piece = piece;
     }
 
+    public boolean isEnPassantMove() {
+        return enPassantMove;
+    }
 
-
+    public void setEnPassantMove(boolean enPassantMove) {
+        this.enPassantMove = enPassantMove;
+    }
 }

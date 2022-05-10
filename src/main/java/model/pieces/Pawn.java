@@ -1,6 +1,4 @@
 package model.pieces;
-
-
 import model.game.Classic;
 import model.game.Tile;
 import view.pieces.PawnGUI;
@@ -19,33 +17,105 @@ public class Pawn extends Piece {
         pawnGUI = new PawnGUI();
     }
 
-
     @Override
-    public void move() {
-
-    }
-
-    @Override
-    public boolean canBeTaken(int color) {
+    public boolean move(){
+        this.possibleMoves.clear();
+        this.canMove();
+        for (Tile tile: possibleMoves){
+            if (tile.isSelected() && tile != this.tile){
+                System.out.println("Tile was found");
+                if (tile.getPiece() == null){
+                    if (tile.getRow() == this.getTile().getRow() + 2){
+                        enPassantPossible = true;
+                    }
+                    if (tile.isEnPassantMove()){
+                        for (Piece pawn: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                            if (pawn instanceof Pawn){
+                                if (((Pawn) pawn).isEnPassantPossible()){
+                                    take(pawn.tile);
+                                }
+                            }
+                        }
+                    }
+                    this.tile.setPiece(null);
+                    this.tile = tile;
+                    this.tile.setPiece(this);
+                    this.firstMove = false;
+                    System.out.println("Moved");
+                    return true;
+                }
+                if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
+                    if (tile.getPiece().canBeTaken(color)){
+                        take(tile);
+                        this.tile.setPiece(null);
+                        this.tile = tile;
+                        this.tile.setPiece(this);
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
+
     @Override
     public void canMove() {
-        int row = tile.getRow();
-        int column = tile.getColumn();
-        ArrayList<Tile> tiles = game.getTiles();
-        if (color == 1){
+        System.out.println("Searching moves");
+        int row = this.tile.getRow();
+        int column = this.tile.getColumn();
+        ArrayList<Tile> tiles = this.game.getTiles();
+        if (this.color == 1){
             for (Tile tile: tiles){
                 if (tile.getRow() == row + 1 && tile.getColumn() == column){
-                    possibleMoves.add(tile);
+                    this.possibleMoves.add(tile);
+                    System.out.println("Found a tile");
                 }
                 if (firstMove){
                     if (tile.getRow()== row + 2 && tile.getColumn() == column){
                         possibleMoves.add(tile);
+                        System.out.println("Found a tile");
                     }
                 }
                 if (tile.getRow() == row + 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.isOccupied()){
                     possibleMoves.add(tile);
+                }
+                if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn){
+                    Pawn piece = (Pawn)tile.getPiece();
+                    if (piece.isEnPassantPossible()){
+                        for (Tile tile1: game.getTiles()){
+                            if (tile1.getRow() == piece.getTile().getRow() + 1 && tile1.getColumn() == piece.getTile().getColumn()){
+                                possibleMoves.add(tile1);
+                                tile1.setEnPassantMove(true);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            for (Tile tile: tiles){
+                if (tile.getRow() == row - 1 && tile.getColumn() == column){
+                    possibleMoves.add(tile);
+                }
+                if (firstMove){
+                    if (tile.getRow() == row -2 && tile.getColumn() == column){
+                        possibleMoves.add(tile);
+                    }
+                }
+                if (tile.getRow() == row - 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column -1) && tile.isOccupied()){
+                    possibleMoves.add(tile);
+                }
+                if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn){
+                    Pawn piece = (Pawn)tile.getPiece();
+                    if (piece.isEnPassantPossible()){
+                        for (Tile tile1: game.getTiles()){
+                            if (tile1.getRow() == piece.getTile().getRow() - 1 && tile1.getColumn() == piece.getTile().getColumn()){
+                                possibleMoves.add(tile1);
+                                tile1.setEnPassantMove(true);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -71,4 +141,13 @@ public class Pawn extends Piece {
     public void promote(int switcher){
 
     }
+
+    public boolean isEnPassantPossible() {
+        return enPassantPossible;
+    }
+
+    public void setEnPassantPossible(boolean enPassantPossible) {
+        this.enPassantPossible = enPassantPossible;
+    }
 }
+

@@ -15,11 +15,13 @@ public class Classic {
     protected GameController controller;
     protected Tile tileWithPiece;
     protected Tile tileToMove;
+    protected boolean whiteTurn;
 
     public void start() {
         boardSetUp();
         figureSetUp();
         clock.start();
+        whiteTurn = true;
     }
 
     public void end() {
@@ -41,16 +43,55 @@ public class Classic {
             }
             tileToMove = tile;
             tileToMove.select();
+            System.out.println("Selected tile to move");
         }
         if (tile.getPiece() != null){
-            if (tileWithPiece != null){
-                tileWithPiece.unselect();
+            if (whiteTurn && tile.getPiece().getColor() == 1){
+                if (tileWithPiece != null){
+                    tileWithPiece.unselect();
+                }
+                tileWithPiece = tile;
+                tileWithPiece.select();
+                System.out.println("Selected tile with piece");
             }
-            tileWithPiece = tile;
-            tileWithPiece.select();
+            if (!whiteTurn && tile.getPiece().getColor() == 0){
+                if (tileWithPiece != null){
+                    tileWithPiece.unselect();
+                }
+                tileWithPiece = tile;
+                tileWithPiece.select();
+                System.out.println("Selected tile with piece");
+            }
+            if (whiteTurn && tile.getPiece().getColor() == 0){
+                if (tileToMove != null){
+                    tileToMove.unselect();
+                }
+                tileToMove = tile;
+                tileToMove.select();
+                System.out.println("Selected tile to move");
+            }
+            if (!whiteTurn && tile.getPiece().getColor() == 1){
+                if (tileToMove != null){
+                    tileToMove.unselect();
+                }
+                tileToMove = tile;
+                tileToMove.select();
+                System.out.println("Selected tile to move");
+            }
         }
         if (tileWithPiece != null && tileToMove != null){
-            tileWithPiece.getPiece().move();
+            System.out.println("Tried to move");
+            Piece piece = tileWithPiece.getPiece();
+            if (piece.move()){
+                whiteTurn =! whiteTurn;
+            }
+            piece.getPossibleMoves().clear();
+            piece.canMove();
+            tileWithPiece.unselect();
+            tileToMove.unselect();
+            tileWithPiece = null;
+            tileToMove = null;
+            System.out.println(whiteTurn);
         }
     }
 

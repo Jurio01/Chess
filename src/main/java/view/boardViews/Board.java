@@ -11,7 +11,7 @@ import java.io.IOException;
 
 
 public class Board extends JFrame {
-    private GameController controller;
+    private final GameController controller;
     private JPanel panel;
 
     public Board(GameController controller){
@@ -46,5 +46,9 @@ public class Board extends JFrame {
 
     public GameController getController() {
         return controller;
+    }
+
+    public void setPanel(JPanel panel) {
+        this.panel = panel;
     }
 }

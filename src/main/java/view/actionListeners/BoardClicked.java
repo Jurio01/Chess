@@ -1,6 +1,9 @@
 package view.actionListeners;
 
 import cotroller.GameController;
+import view.boardViews.BoardPanel;
+
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -17,7 +20,13 @@ public class BoardClicked implements MouseListener {
         controller.setX(x);
         controller.setY(y);
         controller.findTile();
-        controller.getBoard().getPanel().repaint();
+        controller.getBoard().remove(controller.getBoard().getPanel());
+        JPanel panel = new BoardPanel(controller.getBoard());
+        controller.getBoard().add(panel);
+        controller.getBoard().setPanel(panel);
+        controller.getBoard().validate();
+        panel.repaint();
+        System.out.println("Done");
     }
 
     @Override

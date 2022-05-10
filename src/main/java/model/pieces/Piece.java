@@ -25,15 +25,20 @@ public abstract class Piece {
     moves the figure can make. Move always calls canMove after it updates the figures position and putInCheck
     after it.
      **/
-    public void move(){
+    public boolean move(){
+        this.possibleMoves.clear();
         this.canMove();
         for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
+                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
                     this.tile.setPiece(null);
                     this.tile = tile;
                     this.tile.setPiece(this);
+                    this.possibleMoves.clear();
                     this.canMove();
+                    System.out.println("Moved");
+                    return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
                     if (tile.getPiece().canBeTaken(color)){
@@ -41,10 +46,12 @@ public abstract class Piece {
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
+                        System.out.println("Taken piece");
                     }
                 }
             }
         }
+        return false;
     }
     /**
     Take is used after move is called on a position that is occupied by another piece. It calls on another method
@@ -55,9 +62,11 @@ public abstract class Piece {
     public void take(Tile tile) {
         if (this.color == 1){
             game.getBlackFigures().remove(tile.getPiece());
+            System.out.println("taken piece");
         }
         else {
             game.getWhiteFigures().remove(tile.getPiece());
+            System.out.println("taken piece");
         }
         tile.setPiece(null);
     }
@@ -67,12 +76,14 @@ public abstract class Piece {
     * otherwise.
      *
      * @param color*/
-    abstract boolean canBeTaken(int color);
+    public boolean canBeTaken(int color){
+        return color != this.color;
+    }
     /**
     Can move is always called once the player selected a tile of his colour with a piece on it. It looks for all
      possible moves that the piece can make
      **/
-    abstract void canMove();
+    public abstract void canMove();
     /**
     This method is always called every time that the player can play. Checks if the king is in check and if it is
     It looks for all the moves that the player can make that put it out of it from the list of possible moves.

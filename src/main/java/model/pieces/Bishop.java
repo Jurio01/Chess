@@ -17,11 +17,6 @@ public class Bishop extends Piece {
 
 
     @Override
-    public boolean canBeTaken(int color) {
-        return false;
-    }
-
-    @Override
     public void canMove() {
         int row = tile.getRow();
         int column = tile.getColumn();

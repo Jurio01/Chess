@@ -13,10 +13,6 @@ public class Knight extends Piece {
         super(tile, color, game);
     }
 
-    @Override
-    public boolean canBeTaken(int color) {
-        return false;
-    }
 
     @Override
     public void canMove() {

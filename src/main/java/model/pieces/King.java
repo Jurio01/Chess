@@ -15,26 +15,24 @@ public class King extends Piece {
 
 
     @Override
-    public void move() {
+    public boolean move() {
         for (Tile tile : game.getTiles()) {
             if (tile.isSelected() && tile != this.tile) {
                 if (tile.getPiece() == null) {
                     this.tile = tile;
                     firstMove = false;
+                    return true;
                 } else {
                     if (tile.getPiece().canBeTaken(color)) {
                         take(tile);
                         this.tile = tile;
                         tile.setPiece(this);
+                        return true;
                     }
                 }
             }
         }
-    }
-
-    @Override
-    public boolean canBeTaken(int color) {
-        return this.color != color;
+        return false;
     }
 
     @Override
