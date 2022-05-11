@@ -8,16 +8,12 @@ import java.util.ArrayList;
 public class Rook extends Piece {
 
     private boolean firstMove; //for implementation of castling
+    private Tile castlingTile;
 
     public Rook(Tile tile, int color, Classic game) {
         super(tile, color, game, (color == 1) ? "rw.png" : "rb.png");
+        firstMove = true;
     }
-
-    @Override
-    public boolean move() {
-        return true;
-    }
-
 
     @Override
     public void canMove() {
@@ -77,5 +73,13 @@ public class Rook extends Piece {
 
     public boolean isFirstMove() {
         return firstMove;
+    }
+
+    public void setCastlingTile(Tile castlingTile) {
+        this.castlingTile = castlingTile;
+    }
+
+    public Tile getCastlingTile() {
+        return castlingTile;
     }
 }

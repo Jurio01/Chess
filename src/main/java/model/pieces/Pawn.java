@@ -25,14 +25,19 @@ public class Pawn extends Piece {
             if (tile.isSelected() && tile != this.tile){
                 System.out.println("Tile was found");
                 if (tile.getPiece() == null){
-                    if (tile.getRow() == this.getTile().getRow() + 2){
+                    if (tile.getRow() == this.getTile().getRow() + 2 || tile.getRow() == this.getTile().getRow() - 2){
                         enPassantPossible = true;
+                        System.out.println("EnPassant possible");
+                    }
+                    if (tile.getRow() == this.getTile().getRow() + 1 || tile.getRow() == this.getTile().getRow() - 1){
+                        enPassantPossible = false;
                     }
                     if (tile.isEnPassantMove()){
                         for (Piece pawn: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (pawn instanceof Pawn){
                                 if (((Pawn) pawn).isEnPassantPossible()){
                                     take(pawn.tile);
+                                    break;
                                 }
                             }
                         }
@@ -82,6 +87,7 @@ public class Pawn extends Piece {
                 if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn){
                     Pawn piece = (Pawn)tile.getPiece();
                     if (piece.isEnPassantPossible()){
+                        System.out.println("Found EnPassant pawn");
                         for (Tile tile1: game.getTiles()){
                             if (tile1.getRow() == piece.getTile().getRow() + 1 && tile1.getColumn() == piece.getTile().getColumn()){
                                 possibleMoves.add(tile1);

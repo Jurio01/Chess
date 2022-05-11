@@ -161,8 +161,7 @@ public class Classic {
                         piece = new Knight(tile, color,this);
                         if (color == 1){
                             whitePieces.add(piece);
-                        }
-                        else {
+                        } else {
                             blackPieces.add(piece);
                         }
                         break;

@@ -38,6 +38,11 @@ public abstract class Piece {
                     this.possibleMoves.clear();
                     this.canMove();
                     System.out.println("Moved");
+                    for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                        if (piece instanceof Pawn){
+                            ((Pawn) piece).setEnPassantPossible(false);
+                        }
+                    }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
@@ -47,6 +52,7 @@ public abstract class Piece {
                         this.tile = tile;
                         this.tile.setPiece(this);
                         System.out.println("Taken piece");
+                        return true;
                     }
                 }
             }
@@ -62,11 +68,9 @@ public abstract class Piece {
     public void take(Tile tile) {
         if (this.color == 1){
             game.getBlackFigures().remove(tile.getPiece());
-            System.out.println("taken piece");
         }
         else {
             game.getWhiteFigures().remove(tile.getPiece());
-            System.out.println("taken piece");
         }
         tile.setPiece(null);
     }
@@ -138,5 +142,11 @@ public abstract class Piece {
 
     public boolean isThreat() {
         return threat;
+    }
+
+    public void setTile(Tile tile) {
+        this.tile.setPiece(null);
+        this.tile = tile;
+        this.tile.setPiece(this);
     }
 }

@@ -8,7 +8,8 @@ public class Tile {
     private final int column;
     private boolean selected = false;
     private Piece piece;
-    private boolean enPassantMove;
+    private boolean enPassantMove; //for enPassant implementation
+    private boolean castleMove; //for castling implementation
 
     public Tile(String color, int row, int column) {
         this.color = color;
@@ -54,5 +55,13 @@ public class Tile {
 
     public void setEnPassantMove(boolean enPassantMove) {
         this.enPassantMove = enPassantMove;
+    }
+
+    public void setCastleMove(boolean castleMove) {
+        this.castleMove = castleMove;
+    }
+
+    public boolean isCastleMove() {
+        return castleMove;
     }
 }
