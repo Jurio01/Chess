@@ -57,10 +57,6 @@ public class Rook extends Piece {
         }
     }
 
-    @Override
-    public void isInCheck() {
-
-    }
 
     @Override
     public boolean putInCheck() {

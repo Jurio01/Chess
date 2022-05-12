@@ -88,32 +88,7 @@ public abstract class Piece {
      possible moves that the piece can make
      **/
     public abstract void canMove();
-    /**
-    This method is always called every time that the player can play. Checks if the king is in check and if it is
-    It looks for all the moves that the player can make that put it out of it from the list of possible moves.
-    **/
-     void isInCheck() {
-        if (this.color == 1){
-            for (Piece piece: game.getBlackFigures()){
-                if (game.getWhiteKing().tile == piece.tile){
-                    for (Piece blackPiece: game.getWhiteFigures()){
-                        blackPiece.check = true;
-                    }
-                    piece.threat = true;
-                }
-            }
-        }
-        if (this.color == 0){
-            for (Piece piece: game.getWhiteFigures()){
-                if (game.getBlackKing().tile == piece.tile){
-                    for (Piece whitePiece: game.getWhiteFigures()){
-                        whitePiece.check = true;
-                    }
-                    piece.threat = true;
-                }
-            }
-        }
-    }
+
     /**
     Put in check is always called once canMove method is called. If any of the items in the list of possible moves
     are equal to the position of the king it returns True, returns False otherwise.
@@ -148,5 +123,9 @@ public abstract class Piece {
         this.tile.setPiece(null);
         this.tile = tile;
         this.tile.setPiece(this);
+    }
+
+    public void kill(){
+        this.tile = null;
     }
 }

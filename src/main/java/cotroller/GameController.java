@@ -3,15 +3,19 @@ package cotroller;
 import model.game.Chess960;
 import model.game.Classic;
 import model.game.Tile;
+import model.pieces.Pawn;
 import view.boardViews.Board;
+import view.boardViews.PromotionScreen;
 
 import java.util.ArrayList;
 
 public class GameController {
-    Classic classic;
-    Board board;
-    int x;
-    int y;
+    private Classic classic;
+    private Board board;
+    private int x;
+    private int y;
+    private PromotionScreen screen;
+    private Pawn pawn;
 
     public GameController(){
         this.classic = new Classic(this);
@@ -103,6 +107,11 @@ public class GameController {
 
     public Classic getGame(){
         return this.classic;
+    }
+
+    public void promote(Pawn pawn){
+        screen = new PromotionScreen(this, pawn);
+        screen.init();
     }
 
 }

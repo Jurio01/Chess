@@ -6,12 +6,13 @@ public class Tile {
     private final String color; //important for chess 960 bishop setUp
     private final int row;
     private final int column;
-    private boolean selected = false;
+    private boolean selected;
     private Piece piece;
     private boolean enPassantMove; //for enPassant implementation
     private boolean castleMove; //for castling implementation
 
     public Tile(String color, int row, int column) {
+        this.selected = false;
         this.color = color;
         this.row = row;
         this.column = column;

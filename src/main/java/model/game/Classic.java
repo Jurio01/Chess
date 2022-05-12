@@ -25,7 +25,9 @@ public class Classic {
     }
 
     public void end() {
+        if (whiteTurn){
 
+        }
     }
 
     public Classic(GameController controller) {
@@ -87,6 +89,7 @@ public class Classic {
             }
             piece.getPossibleMoves().clear();
             piece.canMove();
+            check();
             tileWithPiece.unselect();
             tileToMove.unselect();
             tileWithPiece = null;
@@ -221,5 +224,29 @@ public class Classic {
 
     public GameController getController() {
         return controller;
+    }
+
+    public void check(){
+        if (whiteTurn){
+            for (Piece piece: blackPieces){
+                for (Tile tile: piece.getPossibleMoves()){
+                    if (tile.isOccupied()){
+                        if (tile.getPiece() == whiteKing){
+                            whiteKing.putInCheck();
+                        }
+                    }
+                }
+            }
+        } else {
+            for (Piece piece: whitePieces){
+                for (Tile tile: piece.getPossibleMoves()){
+                    if (tile.isOccupied()){
+                        if (tile.getPiece() == blackKing){
+                            blackKing.putInCheck();
+                        }
+                    }
+                }
+            }
+        }
     }
 }

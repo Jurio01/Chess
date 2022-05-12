@@ -87,10 +87,6 @@ public class King extends Piece {
         }
     }
 
-    @Override
-    public void isInCheck() {
-
-    }
 
     @Override
     public boolean putInCheck() {
@@ -99,9 +95,9 @@ public class King extends Piece {
     }
 
     /**
-     * Takes
-     *
-     * @param rook and looks if this position is occupied by a rook that was not yet moved.
+     *Takes
+     * @param rook and looks if this position is occupied by a rook that was not yet moved, then checks if all the tiles between king and rook are
+     * not occupied.
      */
     // It's ugly but it works
     public void castle(Rook rook) {

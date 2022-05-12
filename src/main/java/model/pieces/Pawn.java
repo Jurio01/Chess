@@ -47,6 +47,9 @@ public class Pawn extends Piece {
                     this.tile.setPiece(this);
                     this.firstMove = false;
                     System.out.println("Moved");
+                    if (isOnEightLine()){
+                        promote();
+                    }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
@@ -55,6 +58,9 @@ public class Pawn extends Piece {
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
+                        if (isOnEightLine()){
+                            promote();
+                        }
                         return true;
                     }
                 }
@@ -88,10 +94,10 @@ public class Pawn extends Piece {
                     Pawn piece = (Pawn)tile.getPiece();
                     if (piece.isEnPassantPossible()){
                         System.out.println("Found EnPassant pawn");
-                        for (Tile tile1: game.getTiles()){
-                            if (tile1.getRow() == piece.getTile().getRow() + 1 && tile1.getColumn() == piece.getTile().getColumn()){
-                                possibleMoves.add(tile1);
-                                tile1.setEnPassantMove(true);
+                        for (Tile enPassantTile: game.getTiles()){
+                            if (enPassantTile.getRow() == piece.getTile().getRow() + 1 && enPassantTile.getColumn() == piece.getTile().getColumn()){
+                                possibleMoves.add(enPassantTile);
+                                enPassantTile.setEnPassantMove(true);
                                 break;
                             }
                         }
@@ -128,24 +134,23 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void isInCheck() {
-
-    }
-
-    @Override
     public boolean putInCheck() {
         return false;
     }
 
 
     /**
-    Gets called once the pawn moves to line 8. It calls one of three constructors of the possible figures,
+    Gets called once the pawn moves to line 8. It calls one of four constructors of the possible figures,
     that can be chosen by the player which is then given the
     initial position of the square of the pawn that was promoted and assigns null values to
     both line and row values.
      **/
-    public void promote(int switcher){
+    public void promote(){
+        game.getController().promote(this);
+    }
 
+    public boolean isOnEightLine(){
+        return this.tile.getRow() == 8 || this.tile.getRow() == 1;
     }
 
     public boolean isEnPassantPossible() {
