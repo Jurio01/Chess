@@ -47,8 +47,15 @@ public class Pawn extends Piece {
                     this.tile.setPiece(this);
                     this.firstMove = false;
                     System.out.println("Moved");
-                    if (isOnEightLine()){
+                    if (isOnEightRank()){
                         promote();
+                    }
+                    for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                        if (piece != this){
+                            if (piece instanceof Pawn){
+                                ((Pawn) piece).setEnPassantPossible(false);
+                            }
+                        }
                     }
                     return true;
                 }
@@ -58,8 +65,15 @@ public class Pawn extends Piece {
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
-                        if (isOnEightLine()){
+                        if (isOnEightRank()){
                             promote();
+                        }
+                        for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                            if (piece != this){
+                                if (piece instanceof Pawn){
+                                    ((Pawn) piece).setEnPassantPossible(false);
+                                }
+                            }
                         }
                         return true;
                     }
@@ -77,7 +91,7 @@ public class Pawn extends Piece {
         ArrayList<Tile> tiles = this.game.getTiles();
         if (this.color == 1){
             for (Tile tile: tiles){
-                if (tile.getRow() == row + 1 && tile.getColumn() == column){
+                if (tile.getRow() == row + 1 && tile.getColumn() == column && !tile.isOccupied()){
                     this.possibleMoves.add(tile);
                     System.out.println("Found a tile");
                 }
@@ -106,7 +120,7 @@ public class Pawn extends Piece {
             }
         } else {
             for (Tile tile: tiles){
-                if (tile.getRow() == row - 1 && tile.getColumn() == column){
+                if (tile.getRow() == row - 1 && tile.getColumn() == column && !tile.isOccupied()){
                     possibleMoves.add(tile);
                 }
                 if (firstMove){
@@ -142,14 +156,13 @@ public class Pawn extends Piece {
     /**
     Gets called once the pawn moves to line 8. It calls one of four constructors of the possible figures,
     that can be chosen by the player which is then given the
-    initial position of the square of the pawn that was promoted and assigns null values to
-    both line and row values.
+    initial position of the square of the pawn that was promoted and kills the pawn
      **/
     public void promote(){
         game.getController().promote(this);
     }
 
-    public boolean isOnEightLine(){
+    public boolean isOnEightRank(){
         return this.tile.getRow() == 8 || this.tile.getRow() == 1;
     }
 

@@ -33,24 +33,44 @@ public class Rook extends Piece {
                     possibleMoves.add(tile);
                     if (tile.isOccupied()) {
                         firstBlock = true;
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
+                            dangerMoves = possibleMoves;
+                        }
+                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
+                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row - i && tile.getColumn() == column && !secondBlock) {
                     possibleMoves.add(tile);
                     if (tile.isOccupied()) {
                         secondBlock = true;
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
+                            dangerMoves = possibleMoves;
+                        }
+                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
+                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row && tile.getColumn() == column + i && !thirdBlock) {
                     possibleMoves.add(tile);
                     if (tile.isOccupied()) {
                         thirdBlock = true;
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
+                            dangerMoves = possibleMoves;
+                        }
+                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
+                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row && tile.getColumn() == column - i && !fourthBlock) {
                     possibleMoves.add(tile);
                     if (tile.isOccupied()) {
                         fourthBlock = true;
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
+                            dangerMoves = possibleMoves;
+                        }
+                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
+                        dangerMoves.remove(tile);
                     }
                 }
             }

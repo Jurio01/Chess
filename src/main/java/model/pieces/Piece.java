@@ -51,7 +51,14 @@ public abstract class Piece {
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
+                        this.possibleMoves.clear();
+                        this.canMove();
                         System.out.println("Taken piece");
+                        for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                            if (piece instanceof Pawn){
+                                ((Pawn) piece).setEnPassantPossible(false);
+                            }
+                        }
                         return true;
                     }
                 }
@@ -127,5 +134,15 @@ public abstract class Piece {
 
     public void kill(){
         this.tile = null;
+    }
+
+    public ArrayList<Tile> getDangerMoves() {
+        return dangerMoves;
+    }
+
+    public void checkingMoves(){
+        ArrayList<Piece> threats = game.getThreats();
+        ArrayList<Tile> moves = possibleMoves;
+
     }
 }

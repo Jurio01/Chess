@@ -16,18 +16,24 @@ public class Classic {
     protected Tile tileWithPiece;
     protected Tile tileToMove;
     protected boolean whiteTurn;
+    protected ArrayList<Piece> threats;
 
     public void start() {
         boardSetUp();
         figureSetUp();
         clock.start();
         whiteTurn = true;
+        this.threats = new ArrayList<Piece>();
     }
 
-    public void end() {
-        if (whiteTurn){
-
+    private void end() {
+        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
+            piece.canMove();
+            if (!piece.getPossibleMoves().isEmpty()) {
+                return;
+            }
         }
+        System.out.println("Game ended");
     }
 
     public Classic(GameController controller) {
@@ -87,13 +93,12 @@ public class Classic {
             if (piece.move()){
                 whiteTurn =! whiteTurn;
             }
-            piece.getPossibleMoves().clear();
-            piece.canMove();
             check();
             tileWithPiece.unselect();
             tileToMove.unselect();
             tileWithPiece = null;
             tileToMove = null;
+            end();
             System.out.println(whiteTurn);
         }
     }
@@ -227,26 +232,23 @@ public class Classic {
     }
 
     public void check(){
-        if (whiteTurn){
-            for (Piece piece: blackPieces){
-                for (Tile tile: piece.getPossibleMoves()){
-                    if (tile.isOccupied()){
-                        if (tile.getPiece() == whiteKing){
-                            whiteKing.putInCheck();
-                        }
-                    }
-                }
-            }
-        } else {
-            for (Piece piece: whitePieces){
-                for (Tile tile: piece.getPossibleMoves()){
-                    if (tile.isOccupied()){
-                        if (tile.getPiece() == blackKing){
-                            blackKing.putInCheck();
-                        }
+        King king = (whiteTurn) ? whiteKing : blackKing;
+        for (Piece piece: (whiteTurn) ? blackPieces : whitePieces){
+            for (Tile tile: piece.getPossibleMoves()){
+                if (tile.isOccupied()){
+                    if (tile.getPiece() == king){
+                        whiteKing.putInCheck();
+                        threats.add(piece);
                     }
                 }
             }
         }
+        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces){
+            piece.getPossibleMoves().clear();
+        }
+    }
+
+    public ArrayList<Piece> getThreats() {
+        return threats;
     }
 }
