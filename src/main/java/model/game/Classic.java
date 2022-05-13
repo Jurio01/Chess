@@ -237,14 +237,18 @@ public class Classic {
             for (Tile tile: piece.getPossibleMoves()){
                 if (tile.isOccupied()){
                     if (tile.getPiece() == king){
-                        whiteKing.putInCheck();
+                        king.putInCheck();
                         threats.add(piece);
                     }
                 }
             }
         }
+        if (threats.isEmpty()){
+            return;
+        }
         for (Piece piece: (whiteTurn) ? whitePieces : blackPieces){
             piece.getPossibleMoves().clear();
+            piece.checkingMoves();
         }
     }
 

@@ -44,6 +44,12 @@ public class King extends Piece {
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
                     }
+                    game.getThreats().clear();
+                    for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
+                        piece.unPin();
+                    }
+                    game.getThreats().clear();
+                    this.check = false;
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
@@ -54,6 +60,8 @@ public class King extends Piece {
                         this.tile = tile;
                         this.tile.setPiece(this);
                         System.out.println("Taken piece");
+                        game.getThreats().clear();
+                        this.check = false;
                         return true;
                     }
                 }

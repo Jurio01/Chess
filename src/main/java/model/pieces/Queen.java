@@ -6,9 +6,25 @@ import model.game.Tile;
 import java.util.ArrayList;
 
 public class Queen extends Piece {
+    private ArrayList<Tile> firsDirection;
+    private ArrayList<Tile> secondDirection;
+    private ArrayList<Tile> thirdDirection;
+    private ArrayList<Tile> fourthDirection;
+    private ArrayList<Tile> fifthDirection;
+    private ArrayList<Tile> sixthDirection;
+    private ArrayList<Tile> seventhDirection;
+    private ArrayList<Tile> eighthDirection;
 
     public Queen(Tile tile, int color, Classic game) {
         super(tile, color, game, (color == 1) ? "qw.png" : "qb.png");
+        this.firsDirection = new ArrayList<Tile>();
+        this.secondDirection = new ArrayList<Tile>();
+        this.thirdDirection = new ArrayList<Tile>();
+        this.fourthDirection = new ArrayList<Tile>();
+        this.fifthDirection = new ArrayList<Tile>();
+        this.sixthDirection = new ArrayList<Tile>();
+        this.seventhDirection = new ArrayList<Tile>();
+        this.eighthDirection = new ArrayList<Tile>();
     }
 
     @Override
@@ -32,90 +48,82 @@ public class Queen extends Piece {
             for (Tile tile: tiles){
                 if (tile.getRow() == row + i && tile.getColumn() == column && !firstBlock){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    firsDirection.add(tile);
+                    if (tile.isOccupied()) {
                         firstBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = firsDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row - i && tile.getColumn() == column && !secondBlock){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    secondDirection.add(tile);
+                    if (tile.isOccupied()) {
                         secondBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = secondDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row && tile.getColumn() == column + i && !thirdBlock){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    thirdDirection.add(tile);
+                    if (tile.isOccupied()) {
                         thirdBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = thirdDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row && tile.getColumn() == column - i && !fourthBlock){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    fourthDirection.add(tile);
+                    if (tile.isOccupied()) {
                         fourthBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = fourthDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row + i && tile.getColumn() == column + i && !fifthBlock){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
+                    fifthDirection.add(tile);
+                    if (tile.isOccupied()) {
                         fifthBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = fifthDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row + i && tile.getColumn() == column - i && !sixthBlock){
                     possibleMoves.add(tile);
+                    sixthDirection.add(tile);
                     if (tile.isOccupied()){
                         sixthBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = sixthDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row - i && tile.getColumn() == column + i && !seventhBlock){
                     possibleMoves.add(tile);
+                    seventhDirection.add(tile);
                     if (tile.isOccupied()){
                         seventhBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = seventhDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
                 if (tile.getRow() == row - i && tile.getColumn() == column - i && !eightBlock){
                     possibleMoves.add(tile);
+                    eighthDirection.add(tile);
                     if (tile.isOccupied()){
                         eightBlock = true;
-                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != this.color){
-                            dangerMoves = possibleMoves;
+                        if (tile.getPiece() instanceof King){
+                            dangerMoves = eighthDirection;
                         }
-                    } if (tile.isOccupied() && !(tile.getPiece() instanceof King) || !tile.isOccupied()){
-                        dangerMoves.remove(tile);
                     }
                 }
             }

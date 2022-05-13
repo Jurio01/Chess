@@ -28,7 +28,11 @@ public abstract class Piece {
     public boolean move(){
         this.possibleMoves.clear();
         this.canMove();
-        for (Tile tile: possibleMoves){
+        King king = (this.color == 1) ? game.getWhiteKing() : game.getBlackKing();
+        if (pin){
+            return false;
+        }
+        for (Tile tile: (king.isCheck()) ? checkMoves :possibleMoves){
             if (tile.isSelected() && tile != this.tile){
                 System.out.println("Tile was found");
                 if (tile.getPiece() == null){
@@ -42,6 +46,9 @@ public abstract class Piece {
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
+                    }
+                    if (king.isCheck()){
+                        pin = true;
                     }
                     return true;
                 }
@@ -141,8 +148,29 @@ public abstract class Piece {
     }
 
     public void checkingMoves(){
+        canMove();
         ArrayList<Piece> threats = game.getThreats();
+        if (threats.size() >= 2){
+            return;
+        }
         ArrayList<Tile> moves = possibleMoves;
+        for (Piece threat: threats){
+            for (Tile threatMove : threat.getDangerMoves()){
+                if (moves.contains(threatMove)){
+                    checkMoves.add(threatMove);
+                }
+            }
+        }
+        for (Tile tile : moves){
+            if (tile.isOccupied()){
+                if (tile.getPiece().isThreat()){
+                    checkMoves.add(tile);
+                }
+            }
+        }
+    }
 
+    public void unPin() {
+        this.pin = false;
     }
 }

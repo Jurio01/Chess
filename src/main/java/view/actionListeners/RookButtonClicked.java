@@ -32,6 +32,7 @@ public class RookButtonClicked implements ActionListener {
                 break;
             }
         }
+        rook.setFirstMove(false);
         pieces.add(rook);
         screen.dispose();
     }
