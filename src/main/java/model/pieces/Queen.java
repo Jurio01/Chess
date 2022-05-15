@@ -46,94 +46,128 @@ public class Queen extends Piece {
         //it is blocked.
         for (int i = 1; i < 8; i++){
             for (Tile tile: tiles){
-                if (tile.getRow() == row + i && tile.getColumn() == column && !firstBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row + i && tile.getColumn() == column){
+                    if (!firstBlock){
+                        possibleMoves.add(tile);
+                    }
                     firsDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !firstBlock){
+                            tile.getPiece().protect(this);
+                        }
                         firstBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = firsDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column && !secondBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row - i && tile.getColumn() == column){
+                    if (!secondBlock){
+                        possibleMoves.add(tile);
+                    }
                     secondDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !secondBlock){
+                            tile.getPiece().protect(this);
+                        }
                         secondBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = secondDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row && tile.getColumn() == column + i && !thirdBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row && tile.getColumn() == column + i){
+                    if (!thirdBlock){
+                        possibleMoves.add(tile);
+                    }
                     thirdDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !thirdBlock){
+                            tile.getPiece().protect(this);
+                        }
                         thirdBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = thirdDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row && tile.getColumn() == column - i && !fourthBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row && tile.getColumn() == column - i){
+                    if (!fourthBlock){
+                        possibleMoves.add(tile);
+                    }
                     fourthDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !fourthBlock){
+                            tile.getPiece().protect(this);
+                        }
                         fourthBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = fourthDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row + i && tile.getColumn() == column + i && !fifthBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row + i && tile.getColumn() == column + i){
+                    if (!fifthBlock){
+                        possibleMoves.add(tile);
+                    }
                     fifthDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !fifthBlock){
+                            tile.getPiece().protect(this);
+                        }
                         fifthBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = fifthDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row + i && tile.getColumn() == column - i && !sixthBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row + i && tile.getColumn() == column - i){
+                    if (!sixthBlock){
+                        possibleMoves.add(tile);
+                    }
                     sixthDirection.add(tile);
                     if (tile.isOccupied()){
+                        if (tile.getPiece().getColor() == color && !sixthBlock){
+                            tile.getPiece().protect(this);
+                        }
                         sixthBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = sixthDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column + i && !seventhBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row - i && tile.getColumn() == column + i){
+                    if (!seventhBlock){
+                        possibleMoves.add(tile);
+                    }
                     seventhDirection.add(tile);
                     if (tile.isOccupied()){
+                        if (tile.getPiece().getColor() == color && !seventhBlock){
+                            tile.getPiece().protect(this);
+                        }
                         seventhBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = seventhDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column - i && !eightBlock){
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row - i && tile.getColumn() == column - i){
+                    if (!eightBlock){
+                        possibleMoves.add(tile);
+                    }
                     eighthDirection.add(tile);
                     if (tile.isOccupied()){
+                        if (tile.getPiece().getColor() == color && !eightBlock){
+                            tile.getPiece().protect(this);
+                        }
                         eightBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = eighthDirection;
                         }
                     }
                 }
             }
         }
-    }
-
-
-    @Override
-    public boolean putInCheck() {
-        return false;
     }
 
 }

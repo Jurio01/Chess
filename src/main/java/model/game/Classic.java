@@ -234,11 +234,13 @@ public class Classic {
     public void check(){
         King king = (whiteTurn) ? whiteKing : blackKing;
         for (Piece piece: (whiteTurn) ? blackPieces : whitePieces){
+            piece.canMove();
             for (Tile tile: piece.getPossibleMoves()){
                 if (tile.isOccupied()){
                     if (tile.getPiece() == king){
                         king.putInCheck();
                         threats.add(piece);
+                        System.out.println("King is in check");
                     }
                 }
             }

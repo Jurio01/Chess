@@ -30,7 +30,7 @@ public abstract class Piece {
         this.canMove();
         King king = (this.color == 1) ? game.getWhiteKing() : game.getBlackKing();
         if (pin){
-            return false;
+            checkingMoves();
         }
         for (Tile tile: (king.isCheck()) ? checkMoves :possibleMoves){
             if (tile.isSelected() && tile != this.tile){
@@ -40,7 +40,6 @@ public abstract class Piece {
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-                    this.canMove();
                     System.out.println("Moved");
                     for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
@@ -49,6 +48,10 @@ public abstract class Piece {
                     }
                     if (king.isCheck()){
                         pin = true;
+                    }
+                    this.protect(null);
+                    for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                        piece.canMove();
                     }
                     return true;
                 }
@@ -59,12 +62,15 @@ public abstract class Piece {
                         this.tile = tile;
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
-                        this.canMove();
                         System.out.println("Taken piece");
                         for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
                             }
+                        }
+                        this.protect(null);
+                        for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                            piece.canMove();
                         }
                         return true;
                     }
@@ -102,12 +108,6 @@ public abstract class Piece {
      possible moves that the piece can make
      **/
     public abstract void canMove();
-
-    /**
-    Put in check is always called once canMove method is called. If any of the items in the list of possible moves
-    are equal to the position of the king it returns True, returns False otherwise.
-     **/
-    abstract boolean putInCheck();
 
     public Tile getTile() {
         return tile;
@@ -172,5 +172,13 @@ public abstract class Piece {
 
     public void unPin() {
         this.pin = false;
+    }
+
+    protected void protect(Piece piece) {
+        this.protection = piece;
+    }
+
+    protected boolean isProtected(){
+        return protection != null;
     }
 }

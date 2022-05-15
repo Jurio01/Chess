@@ -37,7 +37,6 @@ public class King extends Piece {
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-                    this.canMove();
                     System.out.println("Moved");
                     for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
@@ -50,10 +49,13 @@ public class King extends Piece {
                     }
                     game.getThreats().clear();
                     this.check = false;
+                    for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                        piece.canMove();
+                    }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
-                    if (tile.getPiece().canBeTaken(color)){
+                    if (tile.getPiece().canBeTaken(color) && !tile.getPiece().isProtected()){
                         this.firstMove = false;
                         take(tile);
                         this.tile.setPiece(null);
@@ -61,7 +63,13 @@ public class King extends Piece {
                         this.tile.setPiece(this);
                         System.out.println("Taken piece");
                         game.getThreats().clear();
+                        for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
+                            piece.unPin();
+                        }
                         this.check = false;
+                        for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                            piece.canMove();
+                        }
                         return true;
                     }
                 }
@@ -81,11 +89,21 @@ public class King extends Piece {
             if (tile.getRow() == row) {
                 if (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) {
                     possibleMoves.add(tile);
+                    if (tile.isOccupied()){
+                        if (tile.getPiece().getColor() == color){
+                            tile.getPiece().protect(this);
+                        }
+                    }
                 }
             }
             if (tile.getRow() == row - 1 || tile.getRow() == row + 1) {
                 if (tile.getColumn() == column || tile.getColumn() == column + 1 || tile.getColumn() == column - 1) {
                     possibleMoves.add(tile);
+                    if (tile.isOccupied()){
+                        if (tile.getPiece().getColor() == color){
+                            tile.getPiece().protect(this);
+                        }
+                    }
                 }
             }
         }
@@ -95,18 +113,22 @@ public class King extends Piece {
             }
         }
         for (Piece piece: enemyPieces){
-            for (Tile tile : piece.getPossibleMoves()){
-                this.possibleMoves.remove(tile);
+            if (piece instanceof Pawn && piece.getColor() != color){
+                for (Tile tile: ((Pawn) piece).getKingDangerTiles()){
+                    this.possibleMoves.remove(tile);
+                }
+            } else {
+                for (Tile tile : piece.getPossibleMoves()){
+                    this.possibleMoves.remove(tile);
+                }
             }
         }
 
     }
 
 
-    @Override
-    public boolean putInCheck() {
+    public void putInCheck() {
         this.check = true;
-        return false;
     }
 
 

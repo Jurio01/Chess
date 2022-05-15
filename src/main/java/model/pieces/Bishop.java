@@ -30,43 +30,63 @@ public class Bishop extends Piece {
         //it is blocked.
         for (int i = 1; i < 8; i++) {
             for (Tile tile : tiles) {
-                if (tile.getRow() == row + i && tile.getColumn() == column + i && !firstBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row + i && tile.getColumn() == column + i) {
+                    if (!firstBlock){
+                        possibleMoves.add(tile);
+                    }
                     firsDirection.add(tile);
                     if (tile.isOccupied()) {
                         firstBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = firsDirection;
+                        }
+                        if (tile.getPiece().getColor() == color){
+                            tile.getPiece().protect(this);
                         }
                     }
                 }
-                if (tile.getRow() == row + i && tile.getColumn() == column - i && !secondBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row + i && tile.getColumn() == column - i) {
+                    if (!secondBlock){
+                        possibleMoves.add(tile);
+                    }
                     secondDirection.add(tile);
                     if (tile.isOccupied()) {
                         secondBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = secondDirection;
+                        }
+                        if (tile.getPiece().getColor() == color){
+                            tile.getPiece().protect(this);
                         }
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column + i && !thirdBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row - i && tile.getColumn() == column + i) {
+                    if (!thirdBlock){
+                        possibleMoves.add(tile);
+                    }
                     thirdDirection.add(tile);
                     if (tile.isOccupied()) {
                         thirdBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = thirdDirection;
+                        }
+                        if (tile.getPiece().getColor() == color){
+                            tile.getPiece().protect(this);
                         }
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column - i && !fourthBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row - i && tile.getColumn() == column - i) {
+                    if (!fourthBlock){
+                        possibleMoves.add(tile);
+                    }
                     fourthDirection.add(tile);
                     if (tile.isOccupied()) {
                         fourthBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = fourthDirection;
+                        }
+                        if (tile.getPiece().getColor() == color){
+                            tile.getPiece().protect(this);
                         }
                     }
                 }
@@ -74,9 +94,4 @@ public class Bishop extends Piece {
         }
     }
 
-
-    @Override
-    public boolean putInCheck() {
-        return false;
-    }
 }

@@ -27,7 +27,11 @@ public class Rook extends Piece {
     public boolean move(){
         this.possibleMoves.clear();
         this.canMove();
-        for (Tile tile: possibleMoves){
+        King king = (color == 1) ? game.getWhiteKing() : game.getBlackKing();
+        if (pin){
+            checkingMoves();
+        }
+        for (Tile tile: (pin) ? checkMoves : possibleMoves){
             if (tile.isSelected() && tile != this.tile){
                 System.out.println("Tile was found");
                 if (tile.getPiece() == null){
@@ -36,12 +40,18 @@ public class Rook extends Piece {
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-                    this.canMove();
                     System.out.println("Moved");
                     for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
+                    }
+                    if (king.isCheck()){
+                        pin = true;
+                    }
+                    this.protect(null);
+                    for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                        piece.canMove();
                     }
                     return true;
                 }
@@ -53,12 +63,15 @@ public class Rook extends Piece {
                         this.tile = tile;
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
-                        this.canMove();
                         System.out.println("Taken piece");
                         for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
                             }
+                        }
+                        this.protect(null);
+                        for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                            piece.canMove();
                         }
                         return true;
                     }
@@ -82,54 +95,68 @@ public class Rook extends Piece {
         //it is blocked.
         for (int i = 1; i < 8; i++) {
             for (Tile tile : tiles) {
-                if (tile.getRow() == row + i && tile.getColumn() == column && !firstBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row + i && tile.getColumn() == column){
+                    if (!firstBlock){
+                        possibleMoves.add(tile);
+                    }
                     firsDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !firstBlock){
+                            tile.getPiece().protect(this);
+                        }
                         firstBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = firsDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row - i && tile.getColumn() == column && !secondBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row - i && tile.getColumn() == column){
+                    if (!secondBlock){
+                        possibleMoves.add(tile);
+                    }
                     secondDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !secondBlock){
+                            tile.getPiece().protect(this);
+                        }
                         secondBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = secondDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row && tile.getColumn() == column + i && !thirdBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row && tile.getColumn() == column + i){
+                    if (!thirdBlock){
+                        possibleMoves.add(tile);
+                    }
                     thirdDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !thirdBlock){
+                            tile.getPiece().protect(this);
+                        }
                         thirdBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = thirdDirection;
                         }
                     }
                 }
-                if (tile.getRow() == row && tile.getColumn() == column - i && !fourthBlock) {
-                    possibleMoves.add(tile);
+                if (tile.getRow() == row && tile.getColumn() == column - i){
+                    if (!fourthBlock){
+                        possibleMoves.add(tile);
+                    }
                     fourthDirection.add(tile);
                     if (tile.isOccupied()) {
+                        if (tile.getPiece().getColor() == color && !fourthBlock){
+                            tile.getPiece().protect(this);
+                        }
                         fourthBlock = true;
-                        if (tile.getPiece() instanceof King){
+                        if (tile.getPiece() instanceof King && tile.getPiece().getColor() != color){
                             dangerMoves = fourthDirection;
                         }
                     }
                 }
             }
         }
-    }
-
-
-    @Override
-    public boolean putInCheck() {
-        return false;
     }
 
     public void setFirstMove(boolean firstMove) {
