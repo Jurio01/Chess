@@ -10,14 +10,26 @@ public abstract class Piece {
     ArrayList<Tile> possibleMoves;
     boolean check;
     int color;
+    String imageName;
     Classic game;
     boolean threat; //to make it easier to find in an array of figures and to make it clear witch piece is threat
                     //to the king so the other player may react accordingly
-
-    public Piece(Tile tile, int color, Classic game) {
+    ArrayList<Tile> dangerMoves;
+    ArrayList<Tile> checkMoves;
+    Piece protection;
+    boolean pin;
+    public Piece(Tile tile, int color, Classic game, String imageName) {
         this.tile = tile;
         this.color = color;
         this.game = game;
+        this.imageName = imageName;
+        tile.setPiece(this);
+        this.possibleMoves = new ArrayList<Tile>();
+        this.dangerMoves = new ArrayList<Tile>();
+        this.checkMoves = new ArrayList<Tile>();
+        this.pin = false;
+        this.protection = null;
+        this.threat = false;
     }
 
     /**
@@ -123,6 +135,10 @@ public abstract class Piece {
 
     public int getColor() {
         return color;
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     public Classic getGame() {

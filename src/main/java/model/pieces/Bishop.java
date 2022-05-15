@@ -3,16 +3,21 @@ package model.pieces;
 
 import model.game.Classic;
 import model.game.Tile;
-import view.pieces.BishopGUI;
 
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
-    BishopGUI bishopGUI;
+    private ArrayList<Tile> firsDirection;
+    private ArrayList<Tile> secondDirection;
+    private ArrayList<Tile> thirdDirection;
+    private ArrayList<Tile> fourthDirection;
 
     public Bishop(Tile tile, int color, Classic game) {
-        super(tile, color, game);
-        bishopGUI = new BishopGUI();
+        super(tile, color, game, (color == 1) ? "bw.png" : "bb.png");
+        this.firsDirection = new ArrayList<Tile>();
+        this.secondDirection = new ArrayList<Tile>();
+        this.thirdDirection = new ArrayList<Tile>();
+        this.fourthDirection = new ArrayList<Tile>();
     }
 
 

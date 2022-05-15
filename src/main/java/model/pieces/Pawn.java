@@ -1,21 +1,20 @@
 package model.pieces;
 import model.game.Classic;
 import model.game.Tile;
-import view.pieces.PawnGUI;
 
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
-    PawnGUI pawnGUI;
-    private boolean movedLast; //important for implementation of En passant
+    private boolean enPassantPossible; //important for implementation of En passant
     private boolean firstMove; //for implementation of the initial 2 squares move
     private ArrayList<Tile> kingDangerTiles;
 
     public Pawn(Tile tile, int color, Classic game) {
-        super(tile, color, game);
-        movedLast = false;
+        super(tile, color, game, (color == 1) ? "pw.png" : "pb.png");
+        kingDangerTiles = new ArrayList<Tile>();
+        enPassantPossible = false;
         firstMove = true;
-        pawnGUI = new PawnGUI();
+        kingDangerTiles = new ArrayList<Tile>();
     }
 
     @Override

@@ -7,10 +7,8 @@ import model.game.Tile;
 import java.util.ArrayList;
 
 public class Knight extends Piece {
-    KingGUI kingGUI;
-
     public Knight(Tile tile, int color, Classic game) {
-        super(tile, color, game);
+        super(tile, color, game, (color == 1) ? "nw.png" : "nb.png");
     }
 
 
