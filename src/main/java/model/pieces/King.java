@@ -22,7 +22,7 @@ public class King extends Piece {
         this.canMove();
         for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
-                System.out.println("Tile was found");
+//                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
                     if (tile.isCastleMove()){
                         if (tile.getColumn() == 7){
@@ -37,7 +37,7 @@ public class King extends Piece {
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-                    System.out.println("Moved");
+//                    System.out.println("Moved");
                     for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
@@ -55,13 +55,13 @@ public class King extends Piece {
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
-                    if (tile.getPiece().canBeTaken(color) && !tile.getPiece().isProtected()){
+                    if (canBeTaken(tile.getPiece()) && !tile.getPiece().isProtected()){
                         this.firstMove = false;
                         take(tile);
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
-                        System.out.println("Taken piece");
+//                        System.out.println("Taken piece");
                         game.getThreats().clear();
                         for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
                             piece.unPin();
@@ -80,10 +80,10 @@ public class King extends Piece {
 
     @Override
     public void canMove() {
+        possibleMoves.clear();
         int row = tile.getRow();
         int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
-        ArrayList<Piece> pieces = (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures();
         ArrayList<Piece> enemyPieces = (this.color == 1) ? game.getBlackFigures() : game.getWhiteFigures();
         for (Tile tile : tiles) {
             if (tile.getRow() == row) {
@@ -107,9 +107,11 @@ public class King extends Piece {
                 }
             }
         }
-        for (Piece piece: pieces){
-            if (piece instanceof Rook && piece.getColor() == this.color){
-                castle((Rook) piece);
+        if (!check){
+            for (Rook rook : game.getRooks()){
+                if (rook.getColor() == this.color){
+                    castle(rook);
+                }
             }
         }
         for (Piece piece: enemyPieces){
@@ -131,6 +133,10 @@ public class King extends Piece {
         this.check = true;
     }
 
+    public void unCheck(){
+        this.check = false;
+    }
+
 
     /**
      *Takes
@@ -140,7 +146,7 @@ public class King extends Piece {
     // It's ugly but it works
     public void castle(Rook rook) {
         int row = this.tile.getRow();
-        System.out.println("trying castling");
+//        System.out.println("trying castling");
         ArrayList<Piece> enemyPieces = (this.color == 1) ? game.getBlackFigures() : game.getWhiteFigures();
         if (firstMove && rook.isFirstMove()){
             if (rook.getTile().getColumn() == 8){
@@ -152,14 +158,14 @@ public class King extends Piece {
                                 rightRook.setCastlingTile(tile);
                             }
                             if (tile.getRow() == row && tile.getColumn() == 6 && (tile.isOccupied() || tile == enemyMove)){
-                                System.out.println("path is blocked");
+//                                System.out.println("path is blocked");
                                 break;
                             }
                             if (tile.getRow() == row && tile.getColumn() == 7 && (tile.isOccupied() || tile == enemyMove)){
                                 break;
                             }
                             if (tile.getRow() == row && tile.getColumn() == 7 && !tile.isOccupied() && tile != enemyMove){
-                                System.out.println("castle short found");
+//                                System.out.println("castle short found");
                                 possibleMoves.add(tile);
                                 tile.setCastleMove(true);
                             }
@@ -177,14 +183,14 @@ public class King extends Piece {
                                 leftRook.setCastlingTile(tile);
                             }
                             if (tile.getRow() == row && (tile.getColumn() == 2 || tile.getColumn() == 4) && (tile.isOccupied() || tile == enemyMove)){
-                                System.out.println("path is blocked");
+//                                System.out.println("path is blocked");
                                 break;
                             }
                             if (tile.getRow() == row && tile.getColumn() == 3 && (tile.isOccupied() || tile == enemyMove)){
                                 break;
                             }
                             if (tile.getRow() == row && tile.getColumn() == 3 && !tile.isOccupied() && tile != enemyMove){
-                                System.out.println("castle long found");
+//                                System.out.println("castle long found");
                                 possibleMoves.add(tile);
                                 tile.setCastleMove(true);
                             }

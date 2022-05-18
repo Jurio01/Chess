@@ -26,6 +26,11 @@ public class Bishop extends Piece {
         int row = tile.getRow();
         int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
+        possibleMoves.clear();
+        firsDirection.clear();
+        secondDirection.clear();
+        thirdDirection.clear();
+        fourthDirection.clear();
         boolean firstBlock = false; //first direction is blocked
         boolean secondBlock = false; //second direction is blocked
         boolean thirdBlock = false; //third direction is blocked

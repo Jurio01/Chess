@@ -28,26 +28,26 @@ public class Rook extends Piece {
         this.possibleMoves.clear();
         this.canMove();
         King king = (color == 1) ? game.getWhiteKing() : game.getBlackKing();
-        if (pin){
-            checkingMoves();
-        }
-        for (Tile tile: (pin) ? checkMoves : possibleMoves){
+//        if (pin){
+//            checkingMoves();
+//        }
+        for (Tile tile: (king.isCheck()) ? checkMoves : possibleMoves){
             if (tile.isSelected() && tile != this.tile){
-                System.out.println("Tile was found");
+//                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
                     this.firstMove =false;
                     this.tile.setPiece(null);
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-                    System.out.println("Moved");
+//                    System.out.println("Moved");
                     for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
                     }
                     if (king.isCheck()){
-                        pin = true;
+//                        pin = true;
                     }
                     this.protect(null);
                     for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
@@ -56,14 +56,14 @@ public class Rook extends Piece {
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
-                    if (tile.getPiece().canBeTaken(color)){
+                    if (canBeTaken(tile.getPiece())){
                         take(tile);
                         this.firstMove =false;
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
-                        System.out.println("Taken piece");
+//                        System.out.println("Taken piece");
                         for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
@@ -86,6 +86,11 @@ public class Rook extends Piece {
         int row = tile.getRow();
         int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
+        possibleMoves.clear();
+        firsDirection.clear();
+        secondDirection.clear();
+        thirdDirection.clear();
+        fourthDirection.clear();
         boolean firstBlock = false; //first direction is blocked
         boolean secondBlock = false; //second direction is blocked
         boolean thirdBlock = false; //third direction is blocked

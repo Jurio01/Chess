@@ -17,6 +17,8 @@ public class Classic {
     protected Tile tileToMove;
     protected boolean whiteTurn;
     protected ArrayList<Piece> threats;
+    protected ArrayList<Rook> rooks;
+    int counter = 0;
 
     public void start() {
         boardSetUp();
@@ -28,8 +30,8 @@ public class Classic {
 
     private void end() {
         for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
-            piece.canMove();
-            if (!piece.getPossibleMoves().isEmpty()) {
+            piece.checkingMoves();
+            if (!piece.getCheckMoves().isEmpty() || (whiteTurn) ? !whiteKing.isCheck() : !blackKing.isCheck()) {
                 return;
             }
         }
@@ -42,6 +44,7 @@ public class Classic {
         this.whitePieces = new ArrayList<Piece>();
         this.blackPieces = new ArrayList<Piece>();
         this.controller = controller;
+        this.rooks = new ArrayList<Rook>();
     }
 
     public void select(Tile tile) {
@@ -51,7 +54,7 @@ public class Classic {
             }
             tileToMove = tile;
             tileToMove.select();
-            System.out.println("Selected tile to move");
+//            System.out.println("Selected tile to move");
         }
         if (tile.getPiece() != null){
             if (whiteTurn && tile.getPiece().getColor() == 1){
@@ -60,7 +63,7 @@ public class Classic {
                 }
                 tileWithPiece = tile;
                 tileWithPiece.select();
-                System.out.println("Selected tile with piece");
+//                System.out.println("Selected tile with piece");
             }
             if (!whiteTurn && tile.getPiece().getColor() == 0){
                 if (tileWithPiece != null){
@@ -68,7 +71,7 @@ public class Classic {
                 }
                 tileWithPiece = tile;
                 tileWithPiece.select();
-                System.out.println("Selected tile with piece");
+//                System.out.println("Selected tile with piece");
             }
             if (whiteTurn && tile.getPiece().getColor() == 0){
                 if (tileToMove != null){
@@ -76,7 +79,7 @@ public class Classic {
                 }
                 tileToMove = tile;
                 tileToMove.select();
-                System.out.println("Selected tile to move");
+//                System.out.println("Selected tile to move");
             }
             if (!whiteTurn && tile.getPiece().getColor() == 1){
                 if (tileToMove != null){
@@ -84,22 +87,41 @@ public class Classic {
                 }
                 tileToMove = tile;
                 tileToMove.select();
-                System.out.println("Selected tile to move");
+//                System.out.println("Selected tile to move");
             }
         }
         if (tileWithPiece != null && tileToMove != null){
-            System.out.println("Tried to move");
+//            System.out.println("Tried to move");
+//            Classic tempGame = this;
+//            tempGame.controller = null;
+//            tempGame.setCounter(counter + 1);
+//            if (counter > 1){
+//                System.out.println("Counter too big");
+//                return;
+//            }
+//            tempGame.select(tile);
+//            tempGame.check();
+//            if (whiteTurn){
+//                if (tempGame.getWhiteKing().isCheck()){
+//                    return;
+//                }
+//            }else {
+//                if (tempGame.getBlackKing().isCheck()){
+//                    return;
+//                }
+//            }
+//            counter = 0;
+            check();
             Piece piece = tileWithPiece.getPiece();
             if (piece.move()){
                 whiteTurn =! whiteTurn;
             }
+            System.out.println(whiteTurn);
             check();
             tileWithPiece.unselect();
             tileToMove.unselect();
             tileWithPiece = null;
             tileToMove = null;
-            end();
-            System.out.println(whiteTurn);
         }
     }
 
@@ -158,6 +180,7 @@ public class Classic {
                         } else {
                             blackPieces.add(piece);
                         }
+                        rooks.add((Rook) piece);
                         break;
                     }
                 }
@@ -232,15 +255,21 @@ public class Classic {
     }
 
     public void check(){
+        threats.clear();
         King king = (whiteTurn) ? whiteKing : blackKing;
+        king.unCheck();
         for (Piece piece: (whiteTurn) ? blackPieces : whitePieces){
+            piece.setThreat(false);
             piece.canMove();
             for (Tile tile: piece.getPossibleMoves()){
                 if (tile.isOccupied()){
                     if (tile.getPiece() == king){
                         king.putInCheck();
-                        threats.add(piece);
-                        System.out.println("King is in check");
+                        if (!threats.contains(piece)){
+                            threats.add(piece);
+                            piece.setThreat(true);
+                            System.out.println("King is in check");
+                        }
                     }
                 }
             }
@@ -248,13 +277,22 @@ public class Classic {
         if (threats.isEmpty()){
             return;
         }
+        System.out.println(threats.size());
         for (Piece piece: (whiteTurn) ? whitePieces : blackPieces){
-            piece.getPossibleMoves().clear();
             piece.checkingMoves();
         }
+        end();
     }
 
     public ArrayList<Piece> getThreats() {
         return threats;
+    }
+
+    public ArrayList<Rook> getRooks() {
+        return rooks;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 }

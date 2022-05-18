@@ -17,6 +17,7 @@ public class Knight extends Piece {
         int row = tile.getRow();
         int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
+        possibleMoves.clear();
         for (Tile tile: tiles){
             if (tile.getColumn() == column + 2 || tile.getColumn() == column - 2){
                 if (tile.getRow() == row + 1 || tile.getRow() == row - 1){

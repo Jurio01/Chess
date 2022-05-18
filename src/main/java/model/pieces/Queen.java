@@ -32,6 +32,15 @@ public class Queen extends Piece {
         int row = tile.getRow();
         int column = tile.getColumn();
         ArrayList<Tile> tiles = game.getTiles();
+        firsDirection.clear();
+        secondDirection.clear();
+        thirdDirection.clear();
+        fourthDirection.clear();
+        fifthDirection.clear();
+        sixthDirection.clear();
+        seventhDirection.clear();
+        eighthDirection.clear();
+        possibleMoves.clear();
         //queen can move in eight directions, so we need to check if any of them is blocked
         boolean firstBlock = false; //first direction is blocked
         boolean secondBlock = false; //second direction is blocked
