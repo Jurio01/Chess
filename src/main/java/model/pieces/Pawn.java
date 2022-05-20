@@ -25,7 +25,7 @@ public class Pawn extends Piece {
 //        if (pin){
 //            checkingMoves();
 //        }
-        for (Tile tile: (king.isCheck()) ? checkMoves : possibleMoves){
+        for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
 //                System.out.println("Tile was found");
                 if (tile.getPiece() == null){

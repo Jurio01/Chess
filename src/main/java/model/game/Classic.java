@@ -18,25 +18,24 @@ public class Classic {
     protected boolean whiteTurn;
     protected ArrayList<Piece> threats;
     protected ArrayList<Rook> rooks;
-    int counter = 0;
+//    int counter = 0;
 
     public void start() {
         boardSetUp();
         figureSetUp();
         clock.start();
         whiteTurn = true;
-        this.threats = new ArrayList<Piece>();
     }
 
-    private void end() {
-        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
-            piece.checkingMoves();
-            if (!piece.getCheckMoves().isEmpty() || (whiteTurn) ? !whiteKing.isCheck() : !blackKing.isCheck()) {
-                return;
-            }
-        }
-        System.out.println("Game ended");
-    }
+//    private void end() {
+//        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
+//            piece.checkingMoves();
+//            if (!piece.getCheckMoves().isEmpty() || (whiteTurn) ? !whiteKing.isCheck() : !blackKing.isCheck()) {
+//                return;
+//            }
+//        }
+//        System.out.println("Game ended");
+//    }
 
     public Classic(GameController controller) {
         this.tiles = new ArrayList<Tile>();
@@ -45,6 +44,7 @@ public class Classic {
         this.blackPieces = new ArrayList<Piece>();
         this.controller = controller;
         this.rooks = new ArrayList<Rook>();
+        this.threats = new ArrayList<Piece>();
     }
 
     public void select(Tile tile) {
@@ -111,9 +111,9 @@ public class Classic {
 //                }
 //            }
 //            counter = 0;
-            check();
             Piece piece = tileWithPiece.getPiece();
             if (piece.move()){
+                check();
                 whiteTurn =! whiteTurn;
             }
             System.out.println(whiteTurn);
@@ -134,7 +134,7 @@ public class Classic {
             for (int j = 1; j < 9; j++) {
                 Tile tile;
                 if ((i % 2 == 0 && j % 2 == 0) || (i % 2 == 1 && j % 2 == 1)) {
-                    tile = new Tile("black", j, i);
+                    tile = new Tile("black", j,i);
                     tiles.add(tile);
                 }
                 if ((i % 2 == 1 && j % 2 == 0) || (i % 2 == 0 && j % 2 == 1)){
@@ -278,10 +278,10 @@ public class Classic {
             return;
         }
         System.out.println(threats.size());
-        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces){
-            piece.checkingMoves();
-        }
-        end();
+//        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces){
+//            piece.checkingMoves();
+//        }
+//        end();
     }
 
     public ArrayList<Piece> getThreats() {
@@ -292,7 +292,24 @@ public class Classic {
         return rooks;
     }
 
-    public void setCounter(int counter) {
-        this.counter = counter;
+//    public void setCounter(int counter) {
+//        this.counter = counter;
+//    }
+
+
+    public void setWhiteKing(King whiteKing) {
+        this.whiteKing = whiteKing;
+    }
+
+    public void setBlackKing(King blackKing) {
+        this.blackKing = blackKing;
+    }
+
+    public void setWhiteTurn(boolean whiteTurn) {
+        this.whiteTurn = whiteTurn;
+    }
+
+    public boolean isWhiteTurn() {
+        return whiteTurn;
     }
 }

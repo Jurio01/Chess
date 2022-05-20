@@ -44,9 +44,9 @@ public class King extends Piece {
                         }
                     }
                     game.getThreats().clear();
-                    for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
-                        piece.unPin();
-                    }
+//                    for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
+//                        piece.unPin();
+//                    }
                     game.getThreats().clear();
                     this.check = false;
                     for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
@@ -63,9 +63,9 @@ public class King extends Piece {
                         this.tile.setPiece(this);
 //                        System.out.println("Taken piece");
                         game.getThreats().clear();
-                        for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
-                            piece.unPin();
-                        }
+//                        for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
+//                            piece.unPin();
+//                        }
                         this.check = false;
                         for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                             piece.canMove();

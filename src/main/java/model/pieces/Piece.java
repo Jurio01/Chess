@@ -17,9 +17,6 @@ public abstract class Piece {
     ArrayList<Tile> dangerMoves;
     ArrayList<Tile> checkMoves;
     Piece protection;
-//    boolean pin;
-    Piece yourThreat;
-    Piece pining;
     public Piece(Tile tile, int color, Classic game, String imageName) {
         this.tile = tile;
         this.color = color;
@@ -28,8 +25,7 @@ public abstract class Piece {
         tile.setPiece(this);
         this.possibleMoves = new ArrayList<Tile>();
         this.dangerMoves = new ArrayList<Tile>();
-        this.checkMoves = new ArrayList<Tile>();
-//        this.pin = false;
+//        this.checkMoves = new ArrayList<Tile>();
         this.protection = null;
         this.threat = false;
     }
@@ -42,19 +38,14 @@ public abstract class Piece {
     public boolean move(){
         this.canMove();
         King king = (this.color == 1) ? game.getWhiteKing() : game.getBlackKing();
-        checkPin();
-//        System.out.println("Pin is " + pin);
-//        if (pin){
+//        if (king.isCheck()){
 //            checkingMoves();
+//            System.out.println("Threat is " + game.getThreats().get(0).threat);
 //        }
-        if (king.isCheck()){
-            checkingMoves();
-            System.out.println("Threat is " + game.getThreats().get(0).threat);
-        }
-        for (Tile tile: (king.isCheck()) ? checkMoves :possibleMoves){
-            if (king.isCheck()){
-                System.out.println("Check moves is empty: " + checkMoves.isEmpty());
-            }
+        for (Tile tile: getPossibleMoves()){
+//            if (king.isCheck()){
+//                System.out.println("Check moves is empty: " + checkMoves.isEmpty());
+//            }
             if (tile.isSelected() && tile != this.tile){
 //                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
@@ -71,20 +62,10 @@ public abstract class Piece {
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
                     }
-                    if (king.isCheck()){
-//                        pin = true;
-                        if (yourThreat == null){
-                            yourThreat = game.getThreats().get(0);
-                            yourThreat.setPining(this);
-                        }
-                    }
                     this.protect(null);
                     for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                         piece.canMove();
                     }
-//                    if (!pin){
-//                        yourThreat = null;
-//                    }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
@@ -107,7 +88,6 @@ public abstract class Piece {
                         for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                             piece.canMove();
                         }
-//                        pin = false;
                         return true;
                     }
                 }
@@ -131,11 +111,6 @@ public abstract class Piece {
         if (tile.getPiece() instanceof Rook){
             game.getRooks().remove((Rook) tile.getPiece());
         }
-        if (tile.getPiece().getPining() != null){
-            tile.getPiece().getPining().setPin(false);
-            tile.getPiece().getPining().setYourThreat(null);
-            tile.getPiece().setPining(null);
-        }
         game.getThreats().remove(tile.getPiece());
         tile.setPiece(null);
     }
@@ -146,18 +121,7 @@ public abstract class Piece {
      *
      * @param piece piece ti be taken*/
     public boolean canBeTaken(Piece piece){
-        if (piece.getColor() != this .color){
-            King king = (color == 1) ? game.getWhiteKing() : game.getBlackKing();
-            if (king.isCheck()){
-                if (piece == yourThreat){
-                    return true;
-                }
-            }
-            if (!king.isCheck()){
-                return true;
-            }
-        }
-        return false;
+        return piece.color != this.color;
     }
     /**
     Can move is always called once the player selected a tile of his colour with a piece on it. It looks for all
@@ -167,15 +131,17 @@ public abstract class Piece {
 
     protected boolean checkValidMove(Tile tile){
         Tile prevTile = this.tile;
+        prevTile.setPiece(null);
         this.tile = tile;
-        for (Piece piece: (color == 1) ? getGame().getBlackFigures() : getGame().getWhiteFigures()){
-            piece.canMove();
-            if ((color == 1) ? game.getWhiteKing().isCheck() : game.getBlackKing().isCheck()){
-                this.tile = prevTile;
-                return false;
-            }
+        this.tile.setPiece(this);
+        if ((color == 1) ? game.getWhiteKing().isCheck() : game.getBlackKing().isCheck()){
+            this.tile = prevTile;
+            game.check();
+            return false;
         }
         this.tile = prevTile;
+        this.tile.setPiece(this);
+        game.check();
         return true;
     }
 
@@ -221,53 +187,28 @@ public abstract class Piece {
         return dangerMoves;
     }
 
-    public void checkingMoves(){
-        checkMoves.clear();
-        ArrayList<Piece> threats = game.getThreats();
-        if (threats.size() == 1){
-            canMove();
-            ArrayList<Tile> moves = possibleMoves;
-            for (Piece threat: threats){
-                for (Tile threatMove : threat.getDangerMoves()){
-                    if (moves.contains(threatMove)){
-                        checkMoves.add(threatMove);
-                    }
-                }
-            }
-            for (Tile tile : moves){
-                if (tile.isOccupied()){
-                    if (tile.getPiece().isThreat()){
-                        checkMoves.add(tile);
-                    }
-                }
-            }
-        }
-        if (yourThreat == null){
-           yourThreat = threats.get(0);
-        }
-        if (threats.isEmpty()){
-            if (yourThreat != null){
-                canMove();
-                ArrayList<Tile> moves = possibleMoves;
-                for (Tile threatMove : yourThreat.getDangerMoves()){
-                    if (moves.contains(threatMove)){
-                        checkMoves.add(threatMove);
-                    }
-                }
-                for (Tile tile : moves){
-                    if (tile.isOccupied()){
-                        if (tile.getPiece().isThreat()){
-                            checkMoves.add(tile);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void unPin() {
-//        this.pin = false;
-    }
+//    public void checkingMoves(){
+//        checkMoves.clear();
+//        ArrayList<Piece> threats = game.getThreats();
+//        if (threats.size() == 1){
+//            canMove();
+//            ArrayList<Tile> moves = possibleMoves;
+//            for (Piece threat: threats){
+//                for (Tile threatMove : threat.getDangerMoves()){
+//                    if (moves.contains(threatMove)){
+//                        checkMoves.add(threatMove);
+//                    }
+//                }
+//            }
+//            for (Tile tile : moves){
+//                if (tile.isOccupied()){
+//                    if (tile.getPiece().isThreat()){
+//                        checkMoves.add(tile);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     protected void protect(Piece piece) {
         this.protection = piece;
@@ -285,27 +226,4 @@ public abstract class Piece {
         this.threat = threat;
     }
 
-    public void setPining(Piece pining) {
-        this.pining = pining;
-    }
-
-    public Piece getPining() {
-        return pining;
-    }
-
-    public void setPin(boolean pin) {
-//        this.pin = pin;
-    }
-
-    public void checkPin(){
-        if (yourThreat == null){
-//            pin = false;
-        } else {
-//            pin = true;
-        }
-    }
-
-    public void setYourThreat(Piece yourThreat) {
-        this.yourThreat = yourThreat;
-    }
 }
