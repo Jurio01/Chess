@@ -4,6 +4,8 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class Piece {
     Tile tile;
@@ -14,9 +16,7 @@ public abstract class Piece {
     Classic game;
     boolean threat; //to make it easier to find in an array of figures and to make it clear witch piece is threat
                     //to the king so the other player may react accordingly
-    ArrayList<Tile> dangerMoves;
     ArrayList<Tile> checkMoves;
-    Piece protection;
     public Piece(Tile tile, int color, Classic game, String imageName) {
         this.tile = tile;
         this.color = color;
@@ -24,9 +24,7 @@ public abstract class Piece {
         this.imageName = imageName;
         tile.setPiece(this);
         this.possibleMoves = new ArrayList<Tile>();
-        this.dangerMoves = new ArrayList<Tile>();
 //        this.checkMoves = new ArrayList<Tile>();
-        this.protection = null;
         this.threat = false;
     }
 
@@ -36,41 +34,32 @@ public abstract class Piece {
     after it.
      **/
     public boolean move(){
+        Logger.getAnonymousLogger().log(Level.INFO,"Moving...");
         this.canMove();
-        King king = (this.color == 1) ? game.getWhiteKing() : game.getBlackKing();
-//        if (king.isCheck()){
-//            checkingMoves();
-//            System.out.println("Threat is " + game.getThreats().get(0).threat);
-//        }
         for (Tile tile: getPossibleMoves()){
-//            if (king.isCheck()){
-//                System.out.println("Check moves is empty: " + checkMoves.isEmpty());
-//            }
             if (tile.isSelected() && tile != this.tile){
-//                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
-                    if (!checkValidMove(tile)){
+                    if (checkInvalidMove(tile)){
                         return false;
                     }
                     this.tile.setPiece(null);
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-//                    System.out.println("Moved");
                     for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
                     }
-                    this.protect(null);
                     for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                         piece.canMove();
                     }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
+                    Logger.getAnonymousLogger().log(Level.INFO,"Taking...");
                     if (canBeTaken(tile.getPiece())){
-                        if (!checkValidMove(tile)){
+                        if (checkInvalidMove(tile)){
                             return false;
                         }
                         take(tile);
@@ -78,13 +67,11 @@ public abstract class Piece {
                         this.tile = tile;
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
-//                        System.out.println("Taken piece");
                         for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
                             }
                         }
-                        this.protect(null);
                         for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                             piece.canMove();
                         }
@@ -129,20 +116,46 @@ public abstract class Piece {
      **/
     public abstract void canMove();
 
-    protected boolean checkValidMove(Tile tile){
+    public boolean checkInvalidMove(Tile tile){
         Tile prevTile = this.tile;
+        Piece prevPiece = tile.getPiece();
+        if (prevPiece != null){
+            if (canBeTaken(prevPiece)){
+                take(prevPiece.getTile());
+            }
+        }
         prevTile.setPiece(null);
+        if (tile.isOccupied()){
+            if (tile.getPiece().getColor() == this.color){
+                prevTile.setPiece(this);
+                return true;
+            }
+        }
         this.tile = tile;
         this.tile.setPiece(this);
+        game.check();
         if ((color == 1) ? game.getWhiteKing().isCheck() : game.getBlackKing().isCheck()){
+            this.tile.setPiece(prevPiece);
             this.tile = prevTile;
+            if (prevPiece != null){
+                if (canBeTaken(prevPiece)){
+                    unTake(prevPiece);
+                }
+            }
+            this.tile.setPiece(this);
             game.check();
-            return false;
+            return true;
         }
+        this.tile.setPiece(prevPiece);
         this.tile = prevTile;
         this.tile.setPiece(this);
+        if (prevPiece != null){
+            if (canBeTaken(prevPiece)){
+                unTake(prevPiece);
+            }
+        }
         game.check();
-        return true;
+        return false;
     }
 
     public Tile getTile() {
@@ -169,10 +182,6 @@ public abstract class Piece {
         return game;
     }
 
-    public boolean isThreat() {
-        return threat;
-    }
-
     public void setTile(Tile tile) {
         this.tile.setPiece(null);
         this.tile = tile;
@@ -183,47 +192,18 @@ public abstract class Piece {
         this.tile = null;
     }
 
-    public ArrayList<Tile> getDangerMoves() {
-        return dangerMoves;
-    }
-
-//    public void checkingMoves(){
-//        checkMoves.clear();
-//        ArrayList<Piece> threats = game.getThreats();
-//        if (threats.size() == 1){
-//            canMove();
-//            ArrayList<Tile> moves = possibleMoves;
-//            for (Piece threat: threats){
-//                for (Tile threatMove : threat.getDangerMoves()){
-//                    if (moves.contains(threatMove)){
-//                        checkMoves.add(threatMove);
-//                    }
-//                }
-//            }
-//            for (Tile tile : moves){
-//                if (tile.isOccupied()){
-//                    if (tile.getPiece().isThreat()){
-//                        checkMoves.add(tile);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-    protected void protect(Piece piece) {
-        this.protection = piece;
-    }
-
-    protected boolean isProtected(){
-        return protection != null;
-    }
-
-    public ArrayList<Tile> getCheckMoves() {
-        return checkMoves;
-    }
-
     public void setThreat(boolean threat) {
         this.threat = threat;
     }
 
+    public void unTake(Piece piece){
+        if (piece == null){
+            return;
+        }
+        if (piece.getColor() == 1){
+            game.getWhiteFigures().add(piece);
+        } else {
+            game.getBlackFigures().add(piece);
+        }
+    }
 }

@@ -22,21 +22,11 @@ public class Knight extends Piece {
             if (tile.getColumn() == column + 2 || tile.getColumn() == column - 2){
                 if (tile.getRow() == row + 1 || tile.getRow() == row - 1){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
-                        if (tile.getPiece().getColor() == color){
-                            tile.getPiece().protect(this);
-                        }
-                    }
                 }
             }
             if (tile.getColumn() == column + 1 || tile.getColumn() == column - 1){
                 if (tile.getRow() == row + 2 || tile.getRow() == row - 2){
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
-                        if (tile.getPiece().getColor() == color){
-                            tile.getPiece().protect(this);
-                        }
-                    }
                 }
             }
         }

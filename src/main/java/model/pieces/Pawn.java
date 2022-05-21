@@ -3,6 +3,8 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Pawn extends Piece {
     private boolean enPassantPossible; //important for implementation of En passant
@@ -19,19 +21,17 @@ public class Pawn extends Piece {
 
     @Override
     public boolean move(){
+        Logger.getAnonymousLogger().log(Level.INFO,"Moving...");
         this.possibleMoves.clear();
         this.canMove();
-        King king = (this.color == 1) ? game.getWhiteKing() : game.getBlackKing();
-//        if (pin){
-//            checkingMoves();
-//        }
         for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
-//                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
+                    if (checkInvalidMove(tile)){
+                        return false;
+                    }
                     if (tile.getRow() == this.getTile().getRow() + 2 || tile.getRow() == this.getTile().getRow() - 2){
                         enPassantPossible = true;
-//                        System.out.println("EnPassant possible");
                     }
                     if (tile.getRow() == this.getTile().getRow() + 1 || tile.getRow() == this.getTile().getRow() - 1){
                         enPassantPossible = false;
@@ -50,7 +50,6 @@ public class Pawn extends Piece {
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.firstMove = false;
-//                    System.out.println("Moved");
                     if (isOnEightRank()){
                         promote();
                     }
@@ -62,25 +61,20 @@ public class Pawn extends Piece {
                             }
                         }
                     }
-                    if (king.isCheck()){
-//                        pin = true;
-                    }
-                    this.protect(null);
-                    for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
-                        piece.canMove();
-                    }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
                     if (canBeTaken(tile.getPiece())){
+                        if (checkInvalidMove(tile)){
+                            return false;
+                        }
+                        Logger.getAnonymousLogger().log(Level.INFO,"Taking...");
                         take(tile);
                         this.firstMove = false;
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
-                        this.canMove();
-//                        System.out.println("Taken piece");
                         if (isOnEightRank()){
                             promote();
                         }
@@ -92,10 +86,6 @@ public class Pawn extends Piece {
                             }
                         }
                         kingDangerTiles.clear();
-                        this.protect(null);
-                        for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
-                            piece.canMove();
-                        }
                         return true;
                     }
                 }
@@ -108,17 +98,22 @@ public class Pawn extends Piece {
     public void canMove() {
 //        System.out.println("Searching moves");
         possibleMoves.clear();
+        kingDangerTiles.clear();
         int row = this.tile.getRow();
         int column = this.tile.getColumn();
         ArrayList<Tile> tiles = this.game.getTiles();
+        boolean block = false;
         if (this.color == 1){
             for (Tile tile: tiles){
+                if (tile.getRow() == row + 1 && tile.getColumn() == column && tile.isOccupied()){
+                    block = true;
+                }
                 if (tile.getRow() == row + 1 && tile.getColumn() == column && !tile.isOccupied()){
                     this.possibleMoves.add(tile);
 //                    System.out.println("Found a tile");
                 }
                 if (firstMove){
-                    if (tile.getRow()== row + 2 && tile.getColumn() == column){
+                    if (tile.getRow()== row + 2 && tile.getColumn() == column && !tile.isOccupied() && !block){
                         possibleMoves.add(tile);
 //                        System.out.println("Found a tile");
                     }
@@ -126,9 +121,6 @@ public class Pawn extends Piece {
                 if (tile.getRow() == row + 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1)){
                     if (tile.isOccupied()){
                         possibleMoves.add(tile);
-                        if (tile.getPiece().getColor() == color){
-                            tile.getPiece().protect(this);
-                        }
                     }
                     kingDangerTiles.add(tile);
                 }
@@ -159,9 +151,6 @@ public class Pawn extends Piece {
                 if (tile.getRow() == row - 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column -1)){
                     if (tile.isOccupied()){
                         possibleMoves.add(tile);
-                        if (tile.getPiece().getColor() == color){
-                            tile.getPiece().protect(this);
-                        }
                     }
                     kingDangerTiles.add(tile);
                 }

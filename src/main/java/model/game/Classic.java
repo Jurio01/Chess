@@ -4,6 +4,8 @@ import cotroller.GameController;
 import model.pieces.*;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Classic {
     protected ArrayList<Tile> tiles;
@@ -27,24 +29,32 @@ public class Classic {
         whiteTurn = true;
     }
 
-//    private void end() {
-//        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
-//            piece.checkingMoves();
-//            if (!piece.getCheckMoves().isEmpty() || (whiteTurn) ? !whiteKing.isCheck() : !blackKing.isCheck()) {
-//                return;
-//            }
-//        }
-//        System.out.println("Game ended");
-//    }
+    private void end() {
+        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
+            piece.canMove();
+            Logger.getAnonymousLogger().log(Level.INFO,"Piece is: " + piece.getClass().getSimpleName());
+            for (Tile tile : piece.getPossibleMoves()) {
+                if (!piece.checkInvalidMove(tile)) {
+                    return;
+                }
+            }
+        }
+        System.out.println("Game ended");
+        if ((whiteTurn) ? whiteKing.isCheck() : blackKing.isCheck()){
+            System.out.println((whiteTurn)? "Black wins!" : "White wins!");
+        }else {
+            System.out.println("Stale mate");
+        }
+    }
 
     public Classic(GameController controller) {
-        this.tiles = new ArrayList<Tile>();
+        this.tiles = new ArrayList<>();
         this.clock = new Clock();
-        this.whitePieces = new ArrayList<Piece>();
-        this.blackPieces = new ArrayList<Piece>();
+        this.whitePieces = new ArrayList<>();
+        this.blackPieces = new ArrayList<>();
         this.controller = controller;
-        this.rooks = new ArrayList<Rook>();
-        this.threats = new ArrayList<Piece>();
+        this.rooks = new ArrayList<>();
+        this.threats = new ArrayList<>();
     }
 
     public void select(Tile tile) {
@@ -91,33 +101,13 @@ public class Classic {
             }
         }
         if (tileWithPiece != null && tileToMove != null){
-//            System.out.println("Tried to move");
-//            Classic tempGame = this;
-//            tempGame.controller = null;
-//            tempGame.setCounter(counter + 1);
-//            if (counter > 1){
-//                System.out.println("Counter too big");
-//                return;
-//            }
-//            tempGame.select(tile);
-//            tempGame.check();
-//            if (whiteTurn){
-//                if (tempGame.getWhiteKing().isCheck()){
-//                    return;
-//                }
-//            }else {
-//                if (tempGame.getBlackKing().isCheck()){
-//                    return;
-//                }
-//            }
-//            counter = 0;
             Piece piece = tileWithPiece.getPiece();
             if (piece.move()){
                 check();
                 whiteTurn =! whiteTurn;
+                end();
             }
             System.out.println(whiteTurn);
-            check();
             tileWithPiece.unselect();
             tileToMove.unselect();
             tileWithPiece = null;
@@ -261,27 +251,20 @@ public class Classic {
         for (Piece piece: (whiteTurn) ? blackPieces : whitePieces){
             piece.setThreat(false);
             piece.canMove();
-            for (Tile tile: piece.getPossibleMoves()){
+            for (Tile tile: (piece instanceof Pawn) ? ((Pawn) piece).getKingDangerTiles() :piece.getPossibleMoves()){
                 if (tile.isOccupied()){
                     if (tile.getPiece() == king){
                         king.putInCheck();
                         if (!threats.contains(piece)){
                             threats.add(piece);
                             piece.setThreat(true);
-                            System.out.println("King is in check");
+                            Logger.getAnonymousLogger().log(Level.INFO,"King is in check");
+                            Logger.getAnonymousLogger().log(Level.INFO,"Piece is: " + piece.getClass().getSimpleName());
                         }
                     }
                 }
             }
         }
-        if (threats.isEmpty()){
-            return;
-        }
-        System.out.println(threats.size());
-//        for (Piece piece: (whiteTurn) ? whitePieces : blackPieces){
-//            piece.checkingMoves();
-//        }
-//        end();
     }
 
     public ArrayList<Piece> getThreats() {
@@ -291,11 +274,6 @@ public class Classic {
     public ArrayList<Rook> getRooks() {
         return rooks;
     }
-
-//    public void setCounter(int counter) {
-//        this.counter = counter;
-//    }
-
 
     public void setWhiteKing(King whiteKing) {
         this.whiteKing = whiteKing;

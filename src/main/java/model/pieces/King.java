@@ -4,6 +4,8 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class King extends Piece {
     private boolean firstMove; //for implementation of castling
@@ -18,12 +20,15 @@ public class King extends Piece {
 
     @Override
     public boolean move() {
+        Logger.getAnonymousLogger().log(Level.INFO,"Moving...");
         this.possibleMoves.clear();
         this.canMove();
         for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
-//                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
+                    if (checkInvalidMove(tile)){
+                        return false;
+                    }
                     if (tile.isCastleMove()){
                         if (tile.getColumn() == 7){
                             rightRook.setTile(rightRook.getCastlingTile());
@@ -44,32 +49,21 @@ public class King extends Piece {
                         }
                     }
                     game.getThreats().clear();
-//                    for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
-//                        piece.unPin();
-//                    }
-                    game.getThreats().clear();
                     this.check = false;
-                    for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
-                        piece.canMove();
-                    }
                     return true;
                 }
                 if (tile.isSelected() && tile != this.tile && tile.isOccupied()){
-                    if (canBeTaken(tile.getPiece()) && !tile.getPiece().isProtected()){
+                    if (canBeTaken(tile.getPiece())){
+                        if (checkInvalidMove(tile)){
+                            return false;
+                        }
                         this.firstMove = false;
                         take(tile);
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
-//                        System.out.println("Taken piece");
                         game.getThreats().clear();
-//                        for (Piece piece: (this.color == 1) ? game.getWhiteFigures() : game.getBlackFigures()){
-//                            piece.unPin();
-//                        }
                         this.check = false;
-                        for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
-                            piece.canMove();
-                        }
                         return true;
                     }
                 }
@@ -89,21 +83,11 @@ public class King extends Piece {
             if (tile.getRow() == row) {
                 if (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) {
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
-                        if (tile.getPiece().getColor() == color){
-                            tile.getPiece().protect(this);
-                        }
-                    }
                 }
             }
             if (tile.getRow() == row - 1 || tile.getRow() == row + 1) {
                 if (tile.getColumn() == column || tile.getColumn() == column + 1 || tile.getColumn() == column - 1) {
                     possibleMoves.add(tile);
-                    if (tile.isOccupied()){
-                        if (tile.getPiece().getColor() == color){
-                            tile.getPiece().protect(this);
-                        }
-                    }
                 }
             }
         }
