@@ -5,6 +5,7 @@ import model.game.Classic;
 import model.game.Tile;
 import model.pieces.King;
 import model.pieces.Piece;
+import model.pieces.PieceColor;
 import model.pieces.Queen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ public class QueenTest {
         game.boardSetUp();
         this.tiles = game.getTiles();
         this.tile = tiles.get(0);
-        queen = new Queen(this.tile, 1, game);
+        queen = new Queen(this.tile, PieceColor.White, game);
         queen.getTile().setPiece(queen);
     }
     @Test

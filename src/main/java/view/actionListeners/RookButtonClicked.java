@@ -3,12 +3,13 @@ package view.actionListeners;
 import model.game.Tile;
 import model.pieces.Pawn;
 import model.pieces.Piece;
+import model.pieces.PieceColor;
 import model.pieces.Rook;
 import view.boardViews.PromotionScreen;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 public class RookButtonClicked implements ActionListener {
     private final Pawn pawn;
@@ -25,7 +26,7 @@ public class RookButtonClicked implements ActionListener {
         Tile tile = pawn.getTile();
         pawn.kill();
         Rook rook = new Rook(tile, pawn.getColor(), pawn.getGame());
-        ArrayList<Piece> pieces = (pawn.getColor() == 1) ? pawn.getGame().getWhiteFigures() : pawn.getGame().getBlackFigures();
+        List<Piece> pieces = (pawn.getColor() == PieceColor.White) ? pawn.getGame().getWhiteFigures() : pawn.getGame().getBlackFigures();
         for (Piece piece: pieces){
             if (piece == pawn){
                 pieces.remove(pawn);

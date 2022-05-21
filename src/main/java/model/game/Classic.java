@@ -4,23 +4,23 @@ import cotroller.GameController;
 import model.pieces.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Classic {
-    protected ArrayList<Tile> tiles;
+    protected List<Tile> tiles;
     protected Clock clock;
-    protected ArrayList<Piece> whitePieces;
-    protected ArrayList<Piece> blackPieces;
+    protected List<Piece> whitePieces;
+    protected List<Piece> blackPieces;
     protected King whiteKing;
     protected King blackKing;
     protected GameController controller;
     protected Tile tileWithPiece;
     protected Tile tileToMove;
     protected boolean whiteTurn;
-    protected ArrayList<Piece> threats;
     protected ArrayList<Rook> rooks;
-//    int counter = 0;
 
     public void start() {
         boardSetUp();
@@ -48,60 +48,61 @@ public class Classic {
     }
 
     public Classic(GameController controller) {
-        this.tiles = new ArrayList<>();
         this.clock = new Clock();
         this.whitePieces = new ArrayList<>();
         this.blackPieces = new ArrayList<>();
         this.controller = controller;
         this.rooks = new ArrayList<>();
-        this.threats = new ArrayList<>();
     }
 
     public void select(Tile tile) {
+        //select empty tile
         if (tile.getPiece() == null){
             if (tileToMove != null){
                 tileToMove.unselect();
             }
             tileToMove = tile;
             tileToMove.select();
-//            System.out.println("Selected tile to move");
         }
+        //select not empty tile
         if (tile.getPiece() != null){
-            if (whiteTurn && tile.getPiece().getColor() == 1){
+            //if it is white turn and tile holds white piece, it is the tile with a piece that will move
+            if (whiteTurn && tile.getPiece().getColor() == PieceColor.White){
                 if (tileWithPiece != null){
                     tileWithPiece.unselect();
                 }
                 tileWithPiece = tile;
                 tileWithPiece.select();
-//                System.out.println("Selected tile with piece");
             }
-            if (!whiteTurn && tile.getPiece().getColor() == 0){
+            //if it isn't white turn and tile holds black piece, it is the tile with a piece that will move
+            if (!whiteTurn && tile.getPiece().getColor() == PieceColor.Black){
                 if (tileWithPiece != null){
                     tileWithPiece.unselect();
                 }
                 tileWithPiece = tile;
                 tileWithPiece.select();
-//                System.out.println("Selected tile with piece");
             }
-            if (whiteTurn && tile.getPiece().getColor() == 0){
+            //if it is white turn and tile holds black piece, it is the tile that the piece will move to
+            if (whiteTurn && tile.getPiece().getColor() == PieceColor.Black){
                 if (tileToMove != null){
                     tileToMove.unselect();
                 }
                 tileToMove = tile;
                 tileToMove.select();
-//                System.out.println("Selected tile to move");
             }
-            if (!whiteTurn && tile.getPiece().getColor() == 1){
+            //if it isn't white turn and tile holds white piece, it is the tile that the piece will move to
+            if (!whiteTurn && tile.getPiece().getColor() == PieceColor.White){
                 if (tileToMove != null){
                     tileToMove.unselect();
                 }
                 tileToMove = tile;
                 tileToMove.select();
-//                System.out.println("Selected tile to move");
             }
         }
+        //once two tiles are selected, piece will make a move
         if (tileWithPiece != null && tileToMove != null){
             Piece piece = tileWithPiece.getPiece();
+            //if piece moves successfully, game checks for check, the turn will reverse and game looks if it is the end
             if (piece.move()){
                 check();
                 whiteTurn =! whiteTurn;
@@ -115,43 +116,44 @@ public class Classic {
         }
     }
 
-    public ArrayList<Tile> getTiles() {
+    public List<Tile> getTiles() {
         return tiles;
     }
 
     public void boardSetUp() {
+        List<Tile> tempList = new ArrayList<>();
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
                 Tile tile;
                 if ((i % 2 == 0 && j % 2 == 0) || (i % 2 == 1 && j % 2 == 1)) {
                     tile = new Tile("black", j,i);
-                    tiles.add(tile);
+                    tempList.add(tile);
                 }
                 if ((i % 2 == 1 && j % 2 == 0) || (i % 2 == 0 && j % 2 == 1)){
                     tile = new Tile("white", j, i);
-                    tiles.add(tile);
+                    tempList.add(tile);
                 }
-
             }
         }
+        tiles = Collections.unmodifiableList(tempList);
     }
 
     public void figureSetUp() {
         for (int i = 0; i < 32; i++) {
             Piece piece;
-            int color;
+            PieceColor color;
             if (i % 2 == 0) {
-                color = 1;
+                color = PieceColor.White;
             } else {
-                color = 0;
+                color = PieceColor.Black;
             }
             // I couldn't think of a way to make this stuff readable, but it works
             // set up pawns
             if (i < 16) {
                 for (Tile tile : this.tiles) {
-                    if ((tile.getRow() == 2 && color == 1 && !tile.isOccupied()) || tile.getRow() == 7 && color == 0 && !tile.isOccupied()) {
+                    if ((tile.getRow() == 2 && color == PieceColor.White && !tile.isOccupied()) || tile.getRow() == 7 && color == PieceColor.Black && !tile.isOccupied()) {
                         piece = new Pawn(tile, color, this);
-                        if (color == 1) {
+                        if (color.getValue() == 1) {
                             whitePieces.add(piece);
                         } else {
                             blackPieces.add(piece);
@@ -163,9 +165,10 @@ public class Classic {
             // set up rooks
             if (i < 20 && i > 15) {
                 for (Tile tile : this.tiles) {
-                    if ((tile.getRow() == 1 && (tile.getColumn() == 1 || tile.getColumn() == 8) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColumn() == 1 || tile.getColumn() == 8) && color == 0 && !tile.isOccupied()) {
+                    if ((tile.getRow() == 1 && (tile.getColumn() == 1 || tile.getColumn() == 8) && color == PieceColor.White && !tile.isOccupied()) ||
+                            tile.getRow() == 8 && (tile.getColumn() == 1 || tile.getColumn() == 8) && color == PieceColor.Black && !tile.isOccupied()) {
                         piece = new Rook(tile, color, this);
-                        if (color == 1) {
+                        if (color.getValue() == 1) {
                             whitePieces.add(piece);
                         } else {
                             blackPieces.add(piece);
@@ -178,9 +181,10 @@ public class Classic {
             // set up knights
             if (i < 24 && i > 19) {
                 for (Tile tile : this.tiles) {
-                    if ((tile.getRow() == 1 && (tile.getColumn() == 2 || tile.getColumn() == 7) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColumn() == 2 || tile.getColumn() == 7) && color == 0 && !tile.isOccupied()) {
+                    if ((tile.getRow() == 1 && (tile.getColumn() == 2 || tile.getColumn() == 7) && color == PieceColor.White && !tile.isOccupied()) ||
+                            tile.getRow() == 8 && (tile.getColumn() == 2 || tile.getColumn() == 7) && color == PieceColor.Black && !tile.isOccupied()) {
                         piece = new Knight(tile, color,this);
-                        if (color == 1){
+                        if (color.getValue() == 1){
                             whitePieces.add(piece);
                         } else {
                             blackPieces.add(piece);
@@ -192,9 +196,10 @@ public class Classic {
             // set up bishops
             if (i < 28 && i > 23){
                 for (Tile tile : this.tiles) {
-                    if ((tile.getRow() == 1 && (tile.getColumn() == 3 || tile.getColumn() == 6) && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && (tile.getColumn() == 3 || tile.getColumn() == 6) && color == 0 && !tile.isOccupied()) {
+                    if ((tile.getRow() == 1 && (tile.getColumn() == 3 || tile.getColumn() == 6) && color == PieceColor.White && !tile.isOccupied()) ||
+                            tile.getRow() == 8 && (tile.getColumn() == 3 || tile.getColumn() == 6) && color == PieceColor.Black && !tile.isOccupied()) {
                         piece = new Bishop(tile, color,this);
-                        if (color == 1){ whitePieces.add(piece);}
+                        if (color.getValue() == 1){ whitePieces.add(piece);}
                         else { blackPieces.add(piece);}
                         break;
                     }
@@ -203,9 +208,10 @@ public class Classic {
             // set up queens
             if (i < 30 && i > 27){
                 for (Tile tile : this.tiles) {
-                    if ((tile.getRow() == 1 &&  tile.getColumn() == 4 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColumn() == 4 && color == 0 && !tile.isOccupied()) {
+                    if ((tile.getRow() == 1 &&  tile.getColumn() == 4 && color == PieceColor.White && !tile.isOccupied()) ||
+                            tile.getRow() == 8 && tile.getColumn() == 4 && color == PieceColor.Black && !tile.isOccupied()) {
                         piece = new Queen(tile, color,this);
-                        if (color == 1){ whitePieces.add(piece);}
+                        if (color.getValue() == 1){ whitePieces.add(piece);}
                         else { blackPieces.add(piece);}
                         break;
                     }
@@ -214,9 +220,10 @@ public class Classic {
             // set up kings
             if (i > 29){
                 for (Tile tile : this.tiles) {
-                    if ((tile.getRow() == 1 && tile.getColumn() == 5 && color == 1 && !tile.isOccupied()) || tile.getRow() == 8 && tile.getColumn() == 5 && color == 0 && !tile.isOccupied()) {
+                    if ((tile.getRow() == 1 && tile.getColumn() == 5 && color == PieceColor.White && !tile.isOccupied()) ||
+                            tile.getRow() == 8 && tile.getColumn() == 5 && color == PieceColor.Black && !tile.isOccupied()) {
                         piece = new King(tile, color,this);
-                        if (color == 1){ whitePieces.add(piece); whiteKing = (King) piece;}
+                        if (color.getValue() == 1){ whitePieces.add(piece); whiteKing = (King) piece;}
                         else { blackPieces.add(piece); blackKing = (King) piece;}
                         break;
                     }
@@ -224,11 +231,11 @@ public class Classic {
             }
         }
     }
-    public ArrayList<Piece> getWhiteFigures() {
+    public List<Piece> getWhiteFigures() {
         return whitePieces;
     }
 
-    public ArrayList<Piece> getBlackFigures() {
+    public List<Piece> getBlackFigures() {
         return blackPieces;
     }
 
@@ -245,30 +252,20 @@ public class Classic {
     }
 
     public void check(){
-        threats.clear();
         King king = (whiteTurn) ? whiteKing : blackKing;
         king.unCheck();
         for (Piece piece: (whiteTurn) ? blackPieces : whitePieces){
-            piece.setThreat(false);
             piece.canMove();
             for (Tile tile: (piece instanceof Pawn) ? ((Pawn) piece).getKingDangerTiles() :piece.getPossibleMoves()){
                 if (tile.isOccupied()){
                     if (tile.getPiece() == king){
                         king.putInCheck();
-                        if (!threats.contains(piece)){
-                            threats.add(piece);
-                            piece.setThreat(true);
-                            Logger.getAnonymousLogger().log(Level.INFO,"King is in check");
-                            Logger.getAnonymousLogger().log(Level.INFO,"Piece is: " + piece.getClass().getSimpleName());
-                        }
+                        Logger.getAnonymousLogger().log(Level.INFO,"King is in check");
+                        Logger.getAnonymousLogger().log(Level.INFO,"Piece is: " + piece.getClass().getSimpleName());
                     }
                 }
             }
         }
-    }
-
-    public ArrayList<Piece> getThreats() {
-        return threats;
     }
 
     public ArrayList<Rook> getRooks() {

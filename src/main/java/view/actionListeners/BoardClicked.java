@@ -17,8 +17,8 @@ public class BoardClicked implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int x = e.getX() - 16;
         int y = e.getY() - 39;
-        controller.setX(x);
-        controller.setY(y);
+        controller.setColumn(x);
+        controller.setRow(y);
         controller.findTile();
         controller.getBoard().remove(controller.getBoard().getPanel());
         JPanel panel = new BoardPanel(controller.getBoard());

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassicTest {
-    Classic game = new Classic(null);;
+    Classic game = new Classic(null);
     List<Tile> tiles;
     List<Piece> pieces;
     public void createNewGame(){
@@ -55,12 +55,12 @@ public class ClassicTest {
         ArrayList<Tile> tiles = new ArrayList<>();
         Tile tile = Mockito.mock(Tile.class);
         tiles.add(tile);
-        King king = new King(tile,1,game);
+        King king = new King(tile,PieceColor.White,game);
         game.getWhiteFigures().add(king);
         game.setWhiteKing(king);
         Mockito.when(tile.getPiece()).thenReturn(king);
         Mockito.when(tile.isOccupied()).thenReturn(true);
-        Mockito.when(piece.getColor()).thenReturn(0);
+        Mockito.when(piece.getColor().getValue()).thenReturn(0);
         Mockito.when(piece.getPossibleMoves()).thenReturn(tiles);
         game.getBlackFigures().add(piece);
         game.setWhiteTurn(true);
@@ -116,13 +116,13 @@ public class ClassicTest {
             if (tile.getRow() == 4 && tile.getColumn() == 5){
                 game.select(tile);
                 Assertions.assertTrue(tile.getPiece() instanceof Pawn);
-                Assertions.assertEquals(1,tile.getPiece().getColor());
+                Assertions.assertEquals(PieceColor.White,tile.getPiece().getColor());
                 pawn = tile.getPiece();
             }
             if (tile.getRow() == 5 && tile.getColumn() == 6){
                 game.select(tile);
                 Assertions.assertTrue(tile.getPiece() instanceof Pawn);
-                Assertions.assertEquals(1,tile.getPiece().getColor());
+                Assertions.assertEquals(PieceColor.White,tile.getPiece().getColor());
                 Assertions.assertEquals(pawn,tile.getPiece());
             }
         }

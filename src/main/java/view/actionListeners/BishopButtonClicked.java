@@ -8,7 +8,7 @@ import view.boardViews.PromotionScreen;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 public class BishopButtonClicked implements ActionListener {
     private final Pawn pawn;
@@ -24,7 +24,7 @@ public class BishopButtonClicked implements ActionListener {
         Tile tile = pawn.getTile();
         pawn.kill();
         Bishop bishop = new Bishop(tile, pawn.getColor(), pawn.getGame());
-        ArrayList<Piece> pieces = (pawn.getColor() == 1) ? pawn.getGame().getWhiteFigures() : pawn.getGame().getBlackFigures();
+        List<Piece> pieces = (pawn.getColor().getValue() == 1) ? pawn.getGame().getWhiteFigures() : pawn.getGame().getBlackFigures();
         for (Piece piece: pieces){
             if (piece == pawn){
                 pieces.remove(pawn);

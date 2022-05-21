@@ -3,20 +3,20 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Pawn extends Piece {
     private boolean enPassantPossible; //important for implementation of En passant
     private boolean firstMove; //for implementation of the initial 2 squares move
-    private ArrayList<Tile> kingDangerTiles;
+    private final List<Tile> kingDangerTiles;
 
-    public Pawn(Tile tile, int color, Classic game) {
-        super(tile, color, game, (color == 1) ? "pw.png" : "pb.png");
-        kingDangerTiles = new ArrayList<Tile>();
+    public Pawn(Tile tile, PieceColor color, Classic game) {
+        super(tile, color, game, (color.getValue() == 1) ? "pw.png" : "pb.png");
+        kingDangerTiles = new ArrayList<>();
         enPassantPossible = false;
         firstMove = true;
-        kingDangerTiles = new ArrayList<Tile>();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Pawn extends Piece {
                         enPassantPossible = false;
                     }
                     if (tile.isEnPassantMove()){
-                        for (Piece pawn: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                        for (Piece pawn: (color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (pawn instanceof Pawn){
                                 if (((Pawn) pawn).isEnPassantPossible()){
                                     take(pawn.tile);
@@ -54,7 +54,7 @@ public class Pawn extends Piece {
                         promote();
                     }
                     kingDangerTiles.clear();
-                    for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                    for (Piece piece: (color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece != this){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
@@ -78,7 +78,7 @@ public class Pawn extends Piece {
                         if (isOnEightRank()){
                             promote();
                         }
-                        for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                        for (Piece piece: (color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece != this){
                                 if (piece instanceof Pawn){
                                     ((Pawn) piece).setEnPassantPossible(false);
@@ -96,27 +96,19 @@ public class Pawn extends Piece {
 
     @Override
     public void canMove() {
-//        System.out.println("Searching moves");
         possibleMoves.clear();
         kingDangerTiles.clear();
         int row = this.tile.getRow();
         int column = this.tile.getColumn();
-        ArrayList<Tile> tiles = this.game.getTiles();
+        List<Tile> tiles = this.game.getTiles();
         boolean block = false;
-        if (this.color == 1){
+        if (this.color == PieceColor.White){
             for (Tile tile: tiles){
                 if (tile.getRow() == row + 1 && tile.getColumn() == column && tile.isOccupied()){
                     block = true;
                 }
                 if (tile.getRow() == row + 1 && tile.getColumn() == column && !tile.isOccupied()){
                     this.possibleMoves.add(tile);
-//                    System.out.println("Found a tile");
-                }
-                if (firstMove){
-                    if (tile.getRow()== row + 2 && tile.getColumn() == column && !tile.isOccupied() && !block){
-                        possibleMoves.add(tile);
-//                        System.out.println("Found a tile");
-                    }
                 }
                 if (tile.getRow() == row + 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1)){
                     if (tile.isOccupied()){
@@ -124,10 +116,8 @@ public class Pawn extends Piece {
                     }
                     kingDangerTiles.add(tile);
                 }
-                if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn){
-                    Pawn piece = (Pawn)tile.getPiece();
+                if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn piece){
                     if (piece.isEnPassantPossible()){
-//                        System.out.println("Found EnPassant pawn");
                         for (Tile enPassantTile: game.getTiles()){
                             if (enPassantTile.getRow() == piece.getTile().getRow() + 1 && enPassantTile.getColumn() == piece.getTile().getColumn()){
                                 possibleMoves.add(enPassantTile);
@@ -138,15 +128,20 @@ public class Pawn extends Piece {
                     }
                 }
             }
-        } else {
-            for (Tile tile: tiles){
-                if (tile.getRow() == row - 1 && tile.getColumn() == column && !tile.isOccupied()){
-                    possibleMoves.add(tile);
-                }
-                if (firstMove){
-                    if (tile.getRow() == row -2 && tile.getColumn() == column){
+            if (firstMove && !block){
+                for (Tile tile: tiles){
+                    if (tile.getRow()== row + 2 && tile.getColumn() == column && !tile.isOccupied()){
                         possibleMoves.add(tile);
                     }
+                }
+            }
+        } else {
+            for (Tile tile: tiles){
+                if (tile.getRow() == row - 1 && tile.getColumn() == column && tile.isOccupied()){
+                    block = true;
+                }
+                if (tile.getRow() == row - 1 && tile.getColumn() == column && !tile.isOccupied()){
+                    possibleMoves.add(tile);
                 }
                 if (tile.getRow() == row - 1 && (tile.getColumn() == column + 1 || tile.getColumn() == column -1)){
                     if (tile.isOccupied()){
@@ -154,8 +149,7 @@ public class Pawn extends Piece {
                     }
                     kingDangerTiles.add(tile);
                 }
-                if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn){
-                    Pawn piece = (Pawn)tile.getPiece();
+                if (tile.getRow() == row && (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) && tile.getPiece() instanceof Pawn piece){
                     if (piece.isEnPassantPossible()){
                         for (Tile tile1: game.getTiles()){
                             if (tile1.getRow() == piece.getTile().getRow() - 1 && tile1.getColumn() == piece.getTile().getColumn()){
@@ -164,6 +158,13 @@ public class Pawn extends Piece {
                                 break;
                             }
                         }
+                    }
+                }
+            }
+            if (firstMove && !block){
+                for (Tile tile: tiles){
+                    if (tile.getRow() == row - 2 && tile.getColumn() == column && !tile.isOccupied()){
+                        possibleMoves.add(tile);
                     }
                 }
             }
@@ -192,7 +193,7 @@ public class Pawn extends Piece {
         this.enPassantPossible = enPassantPossible;
     }
 
-    public ArrayList<Tile> getKingDangerTiles() {
+    public List<Tile> getKingDangerTiles() {
         return kingDangerTiles;
     }
 }

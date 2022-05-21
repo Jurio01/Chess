@@ -5,10 +5,11 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Knight extends Piece {
-    public Knight(Tile tile, int color, Classic game) {
-        super(tile, color, game, (color == 1) ? "nw.png" : "nb.png");
+    public Knight(Tile tile, PieceColor color, Classic game) {
+        super(tile, color, game, (color == PieceColor.White) ? "nw.png" : "nb.png");
     }
 
 
@@ -16,7 +17,7 @@ public class Knight extends Piece {
     public void canMove() {
         int row = tile.getRow();
         int column = tile.getColumn();
-        ArrayList<Tile> tiles = game.getTiles();
+        List<Tile> tiles = game.getTiles();
         possibleMoves.clear();
         for (Tile tile: tiles){
             if (tile.getColumn() == column + 2 || tile.getColumn() == column - 2){

@@ -5,11 +5,12 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bishop extends Piece {
 
-    public Bishop(Tile tile, int color, Classic game) {
-        super(tile, color, game, (color == 1) ? "bw.png" : "bb.png");
+    public Bishop(Tile tile, PieceColor color, Classic game) {
+        super(tile, color, game, (color.getValue() == 1) ? "bw.png" : "bb.png");
     }
 
 
@@ -18,7 +19,7 @@ public class Bishop extends Piece {
         possibleMoves.clear();
         int row = tile.getRow();
         int column = tile.getColumn();
-        ArrayList<Tile> tiles = game.getTiles();
+        List<Tile> tiles = game.getTiles();
         boolean firstBlock = false; //first direction is blocked
         boolean secondBlock = false; //second direction is blocked
         boolean thirdBlock = false; //third direction is blocked

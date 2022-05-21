@@ -8,14 +8,13 @@ import view.boardViews.Board;
 import view.boardViews.PromotionScreen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
-    private Classic classic;
-    private Board board;
-    private int x;
-    private int y;
-    private PromotionScreen screen;
-    private Pawn pawn;
+    private final Classic classic;
+    private final Board board;
+    private int column;
+    private int row;
 
     public GameController(){
         this.classic = new Classic(this);
@@ -31,66 +30,67 @@ public class GameController {
     }
     //this is the best solution I could find to get the coords of clicked tiles, please don't even ask why I am starting
     //from 1 and not 0. It's just the way it is, and I'm too lazy to change it.
-    public void setX(int x){
-        if (x<=64){
-            this.x = 1;
+    public void setColumn(int column){
+        if (column <=64){
+            this.column = 1;
         }
-        if (64<x && x<=128){
-            this.x = 2;
+        if (64< column && column <=128){
+            this.column = 2;
         }
-        if (128<x && x<=192){
-            this.x = 3;
+        if (128< column && column <=192){
+            this.column = 3;
         }
-        if (192<x && x<=256){
-            this.x = 4;
+        if (192< column && column <=256){
+            this.column = 4;
         }
-        if (256<x && x<=320){
-            this.x = 5;
+        if (256< column && column <=320){
+            this.column = 5;
         }
-        if (320<x && x<=384){
-            this.x = 6;
+        if (320< column && column <=384){
+            this.column = 6;
         }
-        if (384<x && x<= 448){
-            this.x = 7;
+        if (384< column && column <= 448){
+            this.column = 7;
         }
-        if (448<x && x<= 512){
-            this.x = 8;
+        if (448< column && column <= 512){
+            this.column = 8;
         }
         //System.out.println(this.x);
     }
     //again I have a certain system in my tiles, and I'm too lazy to change it so 0 is actually 8
-    public void setY(int y){
-        if (y<=64){
-            this.y = 8;
+
+    public void setRow(int row){
+        if (row <=64){
+            this.row = 8;
         }
-        if (64<y && y<=128){
-            this.y = 7;
+        if (64< row && row <=128){
+            this.row = 7;
         }
-        if (128<y && y<=192){
-            this.y = 6;
+        if (128< row && row <=192){
+            this.row = 6;
         }
-        if (192<y && y<=256){
-            this.y = 5;
+        if (192< row && row <=256){
+            this.row = 5;
         }
-        if (256<y && y<=320){
-            this.y = 4;
+        if (256< row && row <=320){
+            this.row = 4;
         }
-        if (320<y && y<=384){
-            this.y = 3;
+        if (320< row && row <=384){
+            this.row = 3;
         }
-        if (384<y && y<= 448){
-            this.y = 2;
+        if (384< row && row <= 448){
+            this.row = 2;
         }
-        if (448<y && y<= 512){
-            this.y = 1;
+        if (448< row && row <= 512){
+            this.row = 1;
         }
         //System.out.println(this.y);
     }
 
     public void findTile(){
-        ArrayList<Tile> tiles = classic.getTiles();
+        List<Tile> tiles = classic.getTiles();
         for (Tile tile: tiles){
-            if (tile.getColumn() == x && tile.getRow() == y){
+            if (tile.getColumn() == column && tile.getRow() == row){
                 classic.select(tile);
                 break;
             }
@@ -110,7 +110,7 @@ public class GameController {
     }
 
     public void promote(Pawn pawn){
-        screen = new PromotionScreen(this, pawn);
+        PromotionScreen screen = new PromotionScreen(this, pawn);
         screen.init();
     }
 

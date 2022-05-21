@@ -4,6 +4,7 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,8 +13,8 @@ public class Rook extends Piece {
     private boolean firstMove; //for implementation of castling
     private Tile castlingTile;
 
-    public Rook(Tile tile, int color, Classic game) {
-        super(tile, color, game, (color == 1) ? "rw.png" : "rb.png");
+    public Rook(Tile tile, PieceColor color, Classic game) {
+        super(tile, color, game, (color == PieceColor.White) ? "rw.png" : "rb.png");
         firstMove = true;
     }
 
@@ -22,13 +23,8 @@ public class Rook extends Piece {
         Logger.getAnonymousLogger().log(Level.INFO,"Moving...");
         this.possibleMoves.clear();
         this.canMove();
-        King king = (color == 1) ? game.getWhiteKing() : game.getBlackKing();
-//        if (pin){
-//            checkingMoves();
-//        }
-        for (Tile tile: (king.isCheck()) ? checkMoves : possibleMoves){
+        for (Tile tile: possibleMoves){
             if (tile.isSelected() && tile != this.tile){
-//                System.out.println("Tile was found");
                 if (tile.getPiece() == null){
                     if (checkInvalidMove(tile)){
                         return false;
@@ -39,7 +35,7 @@ public class Rook extends Piece {
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
 //                    System.out.println("Moved");
-                    for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                    for (Piece piece: (color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
@@ -58,7 +54,7 @@ public class Rook extends Piece {
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
 //                        System.out.println("Taken piece");
-                        for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                        for (Piece piece: (color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
                             }
@@ -75,7 +71,7 @@ public class Rook extends Piece {
     public void canMove() {
         int row = tile.getRow();
         int column = tile.getColumn();
-        ArrayList<Tile> tiles = game.getTiles();
+        List<Tile> tiles = game.getTiles();
         possibleMoves.clear();
         boolean firstBlock = false; //first direction is blocked
         boolean secondBlock = false; //second direction is blocked

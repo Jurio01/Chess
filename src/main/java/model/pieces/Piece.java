@@ -4,28 +4,25 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class Piece {
     Tile tile;
-    ArrayList<Tile> possibleMoves;
+    List<Tile> possibleMoves;
     boolean check;
-    int color;
+    PieceColor color;
     String imageName;
     Classic game;
-    boolean threat; //to make it easier to find in an array of figures and to make it clear witch piece is threat
-                    //to the king so the other player may react accordingly
-    ArrayList<Tile> checkMoves;
-    public Piece(Tile tile, int color, Classic game, String imageName) {
+
+    public Piece(Tile tile, PieceColor color, Classic game, String imageName) {
         this.tile = tile;
         this.color = color;
         this.game = game;
         this.imageName = imageName;
         tile.setPiece(this);
-        this.possibleMoves = new ArrayList<Tile>();
-//        this.checkMoves = new ArrayList<Tile>();
-        this.threat = false;
+        this.possibleMoves = new ArrayList<>();
     }
 
     /**
@@ -46,12 +43,12 @@ public abstract class Piece {
                     this.tile = tile;
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
-                    for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                    for (Piece piece: (color.getValue() == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
                     }
-                    for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                    for (Piece piece: (color.getValue() == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                         piece.canMove();
                     }
                     return true;
@@ -67,12 +64,12 @@ public abstract class Piece {
                         this.tile = tile;
                         this.tile.setPiece(this);
                         this.possibleMoves.clear();
-                        for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                        for (Piece piece: (color.getValue() == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
                             if (piece instanceof Pawn){
                                 ((Pawn) piece).setEnPassantPossible(false);
                             }
                         }
-                        for (Piece piece: (color == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
+                        for (Piece piece: (color.getValue() == 1) ? game.getWhiteFigures() : getGame().getBlackFigures()){
                             piece.canMove();
                         }
                         return true;
@@ -89,7 +86,7 @@ public abstract class Piece {
     null value.
      **/
     public void take(Tile tile) {
-        if (this.color == 1){
+        if (this.color.getValue() == 1){
             game.getBlackFigures().remove(tile.getPiece());
         }
         else {
@@ -98,7 +95,6 @@ public abstract class Piece {
         if (tile.getPiece() instanceof Rook){
             game.getRooks().remove((Rook) tile.getPiece());
         }
-        game.getThreats().remove(tile.getPiece());
         tile.setPiece(null);
     }
     /**
@@ -134,7 +130,7 @@ public abstract class Piece {
         this.tile = tile;
         this.tile.setPiece(this);
         game.check();
-        if ((color == 1) ? game.getWhiteKing().isCheck() : game.getBlackKing().isCheck()){
+        if ((color.getValue() == 1) ? game.getWhiteKing().isCheck() : game.getBlackKing().isCheck()){
             this.tile.setPiece(prevPiece);
             this.tile = prevTile;
             if (prevPiece != null){
@@ -162,7 +158,7 @@ public abstract class Piece {
         return tile;
     }
 
-    public ArrayList<Tile> getPossibleMoves() {
+    public List<Tile> getPossibleMoves() {
         return possibleMoves;
     }
 
@@ -170,7 +166,7 @@ public abstract class Piece {
         return check;
     }
 
-    public int getColor() {
+    public PieceColor getColor() {
         return color;
     }
 
@@ -192,15 +188,11 @@ public abstract class Piece {
         this.tile = null;
     }
 
-    public void setThreat(boolean threat) {
-        this.threat = threat;
-    }
-
     public void unTake(Piece piece){
         if (piece == null){
             return;
         }
-        if (piece.getColor() == 1){
+        if (piece.getColor().getValue() == 1){
             game.getWhiteFigures().add(piece);
         } else {
             game.getBlackFigures().add(piece);

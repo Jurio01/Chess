@@ -4,6 +4,7 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,8 +13,8 @@ public class King extends Piece {
     private Rook leftRook; //also for castling reasons
     private Rook rightRook;
 
-    public King(Tile tile, int color, Classic game) {
-        super(tile, color, game, (color == 1) ? "kw.png" : "kb.png");
+    public King(Tile tile, PieceColor color, Classic game) {
+        super(tile, color, game, (color == PieceColor.White) ? "kw.png" : "kb.png");
         firstMove = true;
     }
 
@@ -43,12 +44,11 @@ public class King extends Piece {
                     this.tile.setPiece(this);
                     this.possibleMoves.clear();
 //                    System.out.println("Moved");
-                    for (Piece piece: (color == 1) ? game.getBlackFigures() : game.getWhiteFigures()){
+                    for (Piece piece: (color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures()){
                         if (piece instanceof Pawn){
                             ((Pawn) piece).setEnPassantPossible(false);
                         }
                     }
-                    game.getThreats().clear();
                     this.check = false;
                     return true;
                 }
@@ -62,7 +62,6 @@ public class King extends Piece {
                         this.tile.setPiece(null);
                         this.tile = tile;
                         this.tile.setPiece(this);
-                        game.getThreats().clear();
                         this.check = false;
                         return true;
                     }
@@ -77,8 +76,8 @@ public class King extends Piece {
         possibleMoves.clear();
         int row = tile.getRow();
         int column = tile.getColumn();
-        ArrayList<Tile> tiles = game.getTiles();
-        ArrayList<Piece> enemyPieces = (this.color == 1) ? game.getBlackFigures() : game.getWhiteFigures();
+        List<Tile> tiles = game.getTiles();
+        List<Piece> enemyPieces = (this.color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures();
         for (Tile tile : tiles) {
             if (tile.getRow() == row) {
                 if (tile.getColumn() == column + 1 || tile.getColumn() == column - 1) {
@@ -131,7 +130,7 @@ public class King extends Piece {
     public void castle(Rook rook) {
         int row = this.tile.getRow();
 //        System.out.println("trying castling");
-        ArrayList<Piece> enemyPieces = (this.color == 1) ? game.getBlackFigures() : game.getWhiteFigures();
+        List<Piece> enemyPieces = (this.color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures();
         if (firstMove && rook.isFirstMove()){
             if (rook.getTile().getColumn() == 8){
                 rightRook = rook;

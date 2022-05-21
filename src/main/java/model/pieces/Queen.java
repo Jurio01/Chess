@@ -4,18 +4,19 @@ import model.game.Classic;
 import model.game.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Queen extends Piece {
 
-    public Queen(Tile tile, int color, Classic game) {
-        super(tile, color, game, (color == 1) ? "qw.png" : "qb.png");
+    public Queen(Tile tile, PieceColor color, Classic game) {
+        super(tile, color, game, (color == PieceColor.White) ? "qw.png" : "qb.png");
     }
 
     @Override
     public void canMove() {
         int row = tile.getRow();
         int column = tile.getColumn();
-        ArrayList<Tile> tiles = game.getTiles();
+        List<Tile> tiles = game.getTiles();
         possibleMoves.clear();
         //queen can move in eight directions, so we need to check if any of them is blocked
         boolean firstBlock = false; //first direction is blocked

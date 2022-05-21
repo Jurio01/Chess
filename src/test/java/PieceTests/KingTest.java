@@ -4,6 +4,7 @@ import model.game.Classic;
 import model.game.Tile;
 import model.pieces.King;
 import model.pieces.Piece;
+import model.pieces.PieceColor;
 import model.pieces.Rook;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,13 +25,13 @@ public class KingTest {
         game.boardSetUp();
         this.tiles = game.getTiles();
         this.tile = tiles.get(0);
-        king = new King(this.tile,1,game);
+        king = new King(this.tile, PieceColor.White,game);
         king.getTile().setPiece(king);
     }
 
     @Test
     public void kingConstructor_kingIsNotInCheckAndOnTile11(){
-        Assertions.assertEquals(false,king.isCheck());
+        Assertions.assertFalse(king.isCheck());
         Assertions.assertEquals(1,king.getTile().getColumn());
         Assertions.assertEquals(1,king.getTile().getRow());
     }
