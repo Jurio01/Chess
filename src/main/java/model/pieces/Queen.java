@@ -3,7 +3,6 @@ package model.pieces;
 import model.game.Classic;
 import model.game.Tile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Queen extends Piece {

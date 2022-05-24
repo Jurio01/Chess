@@ -14,6 +14,7 @@ public class ClassicTest {
     Classic game = new Classic(null);
     List<Tile> tiles;
     List<Piece> pieces;
+
     public void createNewGame(){
         game.boardSetUp();
         tiles = game.getTiles();

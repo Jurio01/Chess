@@ -11,8 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PromotionScreen extends JFrame {
-    private GameController controller;
-    private Pawn pawn;
+    private final GameController controller;
+    private final Pawn pawn;
 
     public void init(){
         this.setUndecorated(true);
@@ -49,5 +49,9 @@ public class PromotionScreen extends JFrame {
     public PromotionScreen(GameController controller, Pawn pawn) throws HeadlessException {
         this.controller = controller;
         this.pawn = pawn;
+    }
+
+    public GameController getController() {
+        return controller;
     }
 }

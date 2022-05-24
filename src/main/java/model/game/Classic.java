@@ -20,16 +20,22 @@ public class Classic {
     protected Tile tileWithPiece;
     protected Tile tileToMove;
     protected boolean whiteTurn;
-    protected ArrayList<Rook> rooks;
+    protected List<Rook> rooks;
 
     public void start() {
         boardSetUp();
         figureSetUp();
-        clock.start();
         whiteTurn = true;
     }
 
-    private void end() {
+    public void end() {
+        if (whitePieces.size() + blackPieces.size() == 3){
+            if (whitePieces.size() > blackPieces.size()){
+                endCheckContains(whitePieces);
+            } else {
+                endCheckContains(blackPieces);
+            }
+        }
         for (Piece piece: (whiteTurn) ? whitePieces : blackPieces) {
             piece.canMove();
             Logger.getAnonymousLogger().log(Level.INFO,"Piece is: " + piece.getClass().getSimpleName());
@@ -42,16 +48,20 @@ public class Classic {
         System.out.println("Game ended");
         if ((whiteTurn) ? whiteKing.isCheck() : blackKing.isCheck()){
             System.out.println((whiteTurn)? "Black wins!" : "White wins!");
+            controller.end((whiteTurn) ? "Black wins" : "White wins");
+            clock.interrupt();
         }else {
             System.out.println("Stale mate");
+            controller.end("Stale mate");
+            clock.interrupt();
         }
     }
 
     public Classic(GameController controller) {
-        this.clock = new Clock();
         this.whitePieces = new ArrayList<>();
         this.blackPieces = new ArrayList<>();
         this.controller = controller;
+        this.clock = new Clock(controller, this);
         this.rooks = new ArrayList<>();
     }
 
@@ -103,10 +113,16 @@ public class Classic {
         if (tileWithPiece != null && tileToMove != null){
             Piece piece = tileWithPiece.getPiece();
             //if piece moves successfully, game checks for check, the turn will reverse and game looks if it is the end
+
             if (piece.move()){
                 check();
                 whiteTurn =! whiteTurn;
                 end();
+                if (!clock.isAlive()){
+                    if (whiteTurn){ //clock starts once both sides have made their first move
+                        clock.start();
+                    }
+                }
             }
             System.out.println(whiteTurn);
             tileWithPiece.unselect();
@@ -268,7 +284,7 @@ public class Classic {
         }
     }
 
-    public ArrayList<Rook> getRooks() {
+    public List<Rook> getRooks() {
         return rooks;
     }
 
@@ -287,4 +303,20 @@ public class Classic {
     public boolean isWhiteTurn() {
         return whiteTurn;
     }
+
+    private void endCheckContains(List<Piece> list){
+        for (Piece piece: list){
+            if (piece instanceof Bishop || piece instanceof Knight){
+                System.out.println("Game ended");
+                System.out.println("Stale mate");
+                clock.interrupt();
+                controller.end("Stale mate");
+            }
+        }
+    }
+
+    public Clock getClock() {
+        return clock;
+    }
+
 }

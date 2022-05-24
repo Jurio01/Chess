@@ -13,7 +13,7 @@ public class Pawn extends Piece {
     private final List<Tile> kingDangerTiles;
 
     public Pawn(Tile tile, PieceColor color, Classic game) {
-        super(tile, color, game, (color.getValue() == 1) ? "pw.png" : "pb.png");
+        super(tile, color, game, (color == PieceColor.White) ? "pw.png" : "pb.png");
         kingDangerTiles = new ArrayList<>();
         enPassantPossible = false;
         firstMove = true;

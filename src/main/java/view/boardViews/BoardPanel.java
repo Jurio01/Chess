@@ -1,16 +1,21 @@
 package view.boardViews;
 
 import model.pieces.*;
+import view.actionListeners.BoardClicked;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 public class BoardPanel extends JPanel {
     private final Board board;
     public BoardPanel(Board board){
         this.board = board;
+        MouseListener listener = new BoardClicked(board.getController());
+        this.addMouseListener(listener);
+        this.setPreferredSize(new Dimension(512,512));
     }
 
     @Override

@@ -5,11 +5,12 @@ import model.pieces.Knight;
 import model.pieces.Pawn;
 import model.pieces.Piece;
 import model.pieces.PieceColor;
+import view.boardViews.BoardPanel;
 import view.boardViews.PromotionScreen;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class KnightButtonClicked implements ActionListener {
@@ -35,6 +36,13 @@ public class KnightButtonClicked implements ActionListener {
             }
         }
         pieces.add(knight);
+        screen.getController().promotionHappened();
+        screen.getController().getBoard().remove(screen.getController().getBoard().getBoardPanel());
+        JPanel panel = new BoardPanel(screen.getController().getBoard());
+        screen.getController().getBoard().add(panel);
+        screen.getController().getBoard().setBoardPanel(panel);
+        screen.getController().getBoard().validate();
+        panel.repaint();
         screen.dispose();
     }
 }

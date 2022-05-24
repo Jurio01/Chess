@@ -129,57 +129,53 @@ public class King extends Piece {
     // It's ugly but it works
     public void castle(Rook rook) {
         int row = this.tile.getRow();
-//        System.out.println("trying castling");
-        List<Piece> enemyPieces = (this.color == PieceColor.White) ? game.getBlackFigures() : game.getWhiteFigures();
+        List<Piece> enemyPieces = (color == PieceColor.White) ? game.getBlackFigures() :game.getWhiteFigures();
         if (firstMove && rook.isFirstMove()){
             if (rook.getTile().getColumn() == 8){
                 rightRook = rook;
                 for (Piece piece: enemyPieces){
+                    piece.canMove();
                     for (Tile tile: game.getTiles()){
-                        for (Tile enemyMove : piece.getPossibleMoves()){
-                            if (tile.getRow() == row && tile.getColumn() == 6){
-                                rightRook.setCastlingTile(tile);
-                            }
-                            if (tile.getRow() == row && tile.getColumn() == 6 && (tile.isOccupied() || tile == enemyMove)){
-//                                System.out.println("path is blocked");
-                                break;
-                            }
-                            if (tile.getRow() == row && tile.getColumn() == 7 && (tile.isOccupied() || tile == enemyMove)){
-                                break;
-                            }
-                            if (tile.getRow() == row && tile.getColumn() == 7 && !tile.isOccupied() && tile != enemyMove){
-//                                System.out.println("castle short found");
-                                possibleMoves.add(tile);
-                                tile.setCastleMove(true);
-                            }
-                            possibleMoves.remove(enemyMove);
+                        if (tile.getRow() == row && (tile.getColumn() == 6 || tile.getColumn() == 7) &&
+                                (tile.isOccupied() || piece.getPossibleMoves().contains(tile))){
+                            return;
                         }
                     }
                 }
-            }
-            if (rook.getTile().getColumn() == 1){
-                leftRook = rook;
                 for (Tile tile: game.getTiles()){
-                    for (Piece piece: enemyPieces){
-                        for (Tile enemyMove: piece.getPossibleMoves()){
-                            if (tile.getRow() == row && tile.getColumn() == 4){
-                                leftRook.setCastlingTile(tile);
-                            }
-                            if (tile.getRow() == row && (tile.getColumn() == 2 || tile.getColumn() == 4) && (tile.isOccupied() || tile == enemyMove)){
-//                                System.out.println("path is blocked");
-                                break;
-                            }
-                            if (tile.getRow() == row && tile.getColumn() == 3 && (tile.isOccupied() || tile == enemyMove)){
-                                break;
-                            }
-                            if (tile.getRow() == row && tile.getColumn() == 3 && !tile.isOccupied() && tile != enemyMove){
-//                                System.out.println("castle long found");
-                                possibleMoves.add(tile);
-                                tile.setCastleMove(true);
-                            }
-                            possibleMoves.remove(enemyMove);
-                        }
+                    if (tile.getRow() == row && tile.getColumn() == 6){
+                        rightRook.setCastlingTile(tile);
                     }
+                    if (tile.getRow() == row && tile.getColumn() == 7 && !tile.isOccupied()){
+                        possibleMoves.add(tile);
+                        tile.setCastleMove(true);
+                    }
+                }
+            }
+        }
+        if (rook.getTile().getColumn() == 1){
+            leftRook = rook;
+            for (Piece piece: enemyPieces){
+                for (Tile tile: game.getTiles()){
+                    if (tile.getRow() == row && (tile.getColumn() == 3 || tile.getColumn() == 4) &&
+                            (tile.isOccupied() || piece.getPossibleMoves().contains(tile))){
+                        return;
+                    }
+                    if (tile.getRow() == row && tile.getColumn() == 2 && tile.isOccupied()){
+                        return;
+                    }
+                }
+            }
+            for (Tile tile: game.getTiles()){
+                if (tile.getRow() == row && tile.getColumn() == 4){
+                    leftRook.setCastlingTile(tile);
+                }
+                if (tile.getRow() == row && tile.getColumn() == 3 && !tile.isOccupied()){
+                    if (checkInvalidMove(tile)){
+                        return;
+                    }
+                    possibleMoves.add(tile);
+                    tile.setCastleMove(true);
                 }
             }
         }

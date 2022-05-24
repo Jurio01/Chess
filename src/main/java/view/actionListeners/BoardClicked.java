@@ -6,6 +6,8 @@ import view.boardViews.BoardPanel;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BoardClicked implements MouseListener {
     GameController controller;
@@ -15,18 +17,18 @@ public class BoardClicked implements MouseListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX() - 16;
-        int y = e.getY() - 39;
+        int x = e.getX();
+        int y = e.getY();
         controller.setColumn(x);
-        controller.setRow(y);
+        controller.setRowSelected(y);
         controller.findTile();
-        controller.getBoard().remove(controller.getBoard().getPanel());
+        controller.getBoard().remove(controller.getBoard().getBoardPanel());
         JPanel panel = new BoardPanel(controller.getBoard());
         controller.getBoard().add(panel);
-        controller.getBoard().setPanel(panel);
+        controller.getBoard().setBoardPanel(panel);
         controller.getBoard().validate();
-        panel.repaint();
-        System.out.println("Done");
+        controller.getBoard().repaint();
+        Logger.getAnonymousLogger().log(Level.INFO,"Clicked");
     }
 
     @Override

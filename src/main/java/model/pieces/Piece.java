@@ -85,7 +85,7 @@ public abstract class Piece {
     removes the other piece standing on the position on which move is being called by setting its position to
     null value.
      **/
-    public void take(Tile tile) {
+    protected void take(Tile tile) {
         if (this.color.getValue() == 1){
             game.getBlackFigures().remove(tile.getPiece());
         }
@@ -103,7 +103,7 @@ public abstract class Piece {
     * otherwise.
      *
      * @param piece piece ti be taken*/
-    public boolean canBeTaken(Piece piece){
+    boolean canBeTaken(Piece piece){
         return piece.color != this.color;
     }
     /**

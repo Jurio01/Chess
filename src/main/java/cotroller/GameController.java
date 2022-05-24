@@ -5,6 +5,7 @@ import model.game.Classic;
 import model.game.Tile;
 import model.pieces.Pawn;
 import view.boardViews.Board;
+import view.boardViews.EndScreen;
 import view.boardViews.PromotionScreen;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.List;
 public class GameController {
     private final Classic classic;
     private final Board board;
-    private int column;
-    private int row;
+    private int columnSelected;
+    private int rowSelected;
 
     public GameController(){
         this.classic = new Classic(this);
@@ -32,57 +33,57 @@ public class GameController {
     //from 1 and not 0. It's just the way it is, and I'm too lazy to change it.
     public void setColumn(int column){
         if (column <=64){
-            this.column = 1;
+            this.columnSelected = 1;
         }
         if (64< column && column <=128){
-            this.column = 2;
+            this.columnSelected = 2;
         }
         if (128< column && column <=192){
-            this.column = 3;
+            this.columnSelected = 3;
         }
         if (192< column && column <=256){
-            this.column = 4;
+            this.columnSelected = 4;
         }
         if (256< column && column <=320){
-            this.column = 5;
+            this.columnSelected = 5;
         }
         if (320< column && column <=384){
-            this.column = 6;
+            this.columnSelected = 6;
         }
         if (384< column && column <= 448){
-            this.column = 7;
+            this.columnSelected = 7;
         }
         if (448< column && column <= 512){
-            this.column = 8;
+            this.columnSelected = 8;
         }
         //System.out.println(this.x);
     }
     //again I have a certain system in my tiles, and I'm too lazy to change it so 0 is actually 8
 
-    public void setRow(int row){
-        if (row <=64){
-            this.row = 8;
+    public void setRowSelected(int rowSelected){
+        if (rowSelected <=64){
+            this.rowSelected = 8;
         }
-        if (64< row && row <=128){
-            this.row = 7;
+        if (64< rowSelected && rowSelected <=128){
+            this.rowSelected = 7;
         }
-        if (128< row && row <=192){
-            this.row = 6;
+        if (128< rowSelected && rowSelected <=192){
+            this.rowSelected = 6;
         }
-        if (192< row && row <=256){
-            this.row = 5;
+        if (192< rowSelected && rowSelected <=256){
+            this.rowSelected = 5;
         }
-        if (256< row && row <=320){
-            this.row = 4;
+        if (256< rowSelected && rowSelected <=320){
+            this.rowSelected = 4;
         }
-        if (320< row && row <=384){
-            this.row = 3;
+        if (320< rowSelected && rowSelected <=384){
+            this.rowSelected = 3;
         }
-        if (384< row && row <= 448){
-            this.row = 2;
+        if (384< rowSelected && rowSelected <= 448){
+            this.rowSelected = 2;
         }
-        if (448< row && row <= 512){
-            this.row = 1;
+        if (448< rowSelected && rowSelected <= 512){
+            this.rowSelected = 1;
         }
         //System.out.println(this.y);
     }
@@ -90,7 +91,7 @@ public class GameController {
     public void findTile(){
         List<Tile> tiles = classic.getTiles();
         for (Tile tile: tiles){
-            if (tile.getColumn() == column && tile.getRow() == row){
+            if (tile.getColumn() == columnSelected && tile.getRow() == rowSelected){
                 classic.select(tile);
                 break;
             }
@@ -114,4 +115,23 @@ public class GameController {
         screen.init();
     }
 
+    public void promotionHappened(){
+        getGame().check();
+        getGame().end();
+    }
+
+    public void end(String message){
+        EndScreen screen = new EndScreen(this,message);
+        screen.init();
+    }
+
+    public void clockEnded(){
+        getGame().getClock().interrupt();
+        boolean side = getGame().getClock().getWhiteTime() <= 0;
+        if (side){
+            end("White wins!");
+        } else {
+            end("Black wins!");
+        }
+    }
 }
