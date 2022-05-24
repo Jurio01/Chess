@@ -278,6 +278,7 @@ public class Classic {
                         king.putInCheck();
                         Logger.getAnonymousLogger().log(Level.INFO,"King is in check");
                         Logger.getAnonymousLogger().log(Level.INFO,"Piece is: " + piece.getClass().getSimpleName());
+                        return;
                     }
                 }
             }
@@ -319,4 +320,11 @@ public class Classic {
         return clock;
     }
 
+    public void setWhitePieces(List<Piece> whitePieces) {
+        this.whitePieces = whitePieces;
+    }
+
+    public void setBlackPieces(List<Piece> blackPieces) {
+        this.blackPieces = blackPieces;
+    }
 }

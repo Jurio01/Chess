@@ -27,7 +27,7 @@ public class BoardClicked implements MouseListener {
         controller.getBoard().add(panel);
         controller.getBoard().setBoardPanel(panel);
         controller.getBoard().validate();
-        controller.getBoard().repaint();
+        panel.repaint();
         Logger.getAnonymousLogger().log(Level.INFO,"Clicked");
     }
 

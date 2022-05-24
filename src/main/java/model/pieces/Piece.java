@@ -115,6 +115,8 @@ public abstract class Piece {
     public boolean checkInvalidMove(Tile tile){
         Tile prevTile = this.tile;
         Piece prevPiece = tile.getPiece();
+        List<Piece> piecesWhite = new ArrayList<>(game.getWhiteFigures());
+        List<Piece> piecesBlack = new ArrayList<>(game.getBlackFigures());
         if (prevPiece != null){
             if (canBeTaken(prevPiece)){
                 take(prevPiece.getTile());
@@ -135,7 +137,9 @@ public abstract class Piece {
             this.tile = prevTile;
             if (prevPiece != null){
                 if (canBeTaken(prevPiece)){
-                    unTake(prevPiece);
+                    prevPiece.setTile(tile);
+                    game.setWhitePieces(piecesWhite);
+                    game.setBlackPieces(piecesBlack);
                 }
             }
             this.tile.setPiece(this);
@@ -147,7 +151,9 @@ public abstract class Piece {
         this.tile.setPiece(this);
         if (prevPiece != null){
             if (canBeTaken(prevPiece)){
-                unTake(prevPiece);
+                prevPiece.setTile(tile);
+                game.setWhitePieces(piecesWhite);
+                game.setBlackPieces(piecesBlack);
             }
         }
         game.check();
