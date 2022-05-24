@@ -5,13 +5,14 @@ import view.boardViews.BoardPanel;
 import view.boardViews.ClockPanel;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Clock extends Thread {
     private final GameController controller;
     private final Classic game;
     long start;
-    long whiteTime = 500000;
-    long blackTime = 500000;
+    long whiteTime = 600000;
+    long blackTime = 600000;
 
     public Clock(GameController controller, Classic game){
         this.controller = controller;
@@ -37,7 +38,7 @@ public class Clock extends Thread {
             whiteTime -= timeElapsed;
             controller.getBoard().remove(controller.getBoard().getClockPanel());
             JPanel panel = new ClockPanel(controller);
-            controller.getBoard().add(panel);
+            controller.getBoard().add(panel, new GridBagConstraints());
             controller.getBoard().setClockPanel(panel);
             controller.getBoard().validate();
             controller.getBoard().repaint();
@@ -54,7 +55,7 @@ public class Clock extends Thread {
             blackTime -= timeElapsed;
             controller.getBoard().remove(controller.getBoard().getClockPanel());
             JPanel panel = new ClockPanel(controller);
-            controller.getBoard().add(panel);
+            controller.getBoard().add(panel, new GridBagConstraints());
             controller.getBoard().setClockPanel(panel);
             controller.getBoard().validate();
             controller.getBoard().repaint();

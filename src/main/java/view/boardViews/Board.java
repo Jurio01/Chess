@@ -23,6 +23,7 @@ public class Board extends JFrame {
         clockPanel = new ClockPanel(controller);
         this.add(clockPanel);
 
+
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
         Image image = null;

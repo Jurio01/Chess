@@ -2,7 +2,10 @@ package model.game;
 
 import cotroller.GameController;
 import model.pieces.*;
+import view.boardViews.BoardPanel;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -123,6 +126,12 @@ public class Classic {
                         clock.start();
                     }
                 }
+                controller.getBoard().remove(controller.getBoard().getBoardPanel());
+                JPanel panel = new BoardPanel(controller.getBoard());
+                controller.getBoard().add(panel, new GridBagConstraints());
+                controller.getBoard().setBoardPanel(panel);
+                controller.getBoard().validate();
+                controller.getBoard().repaint();
             }
             System.out.println(whiteTurn);
             tileWithPiece.unselect();

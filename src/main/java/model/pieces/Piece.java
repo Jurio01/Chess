@@ -193,15 +193,4 @@ public abstract class Piece {
     public void kill(){
         this.tile = null;
     }
-
-    public void unTake(Piece piece){
-        if (piece == null){
-            return;
-        }
-        if (piece.getColor().getValue() == 1){
-            game.getWhiteFigures().add(piece);
-        } else {
-            game.getBlackFigures().add(piece);
-        }
-    }
 }
