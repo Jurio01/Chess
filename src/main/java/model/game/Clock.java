@@ -10,9 +10,8 @@ import java.awt.*;
 public class Clock extends Thread {
     private final GameController controller;
     private final Classic game;
-    long start;
-    long whiteTime = 600000;
-    long blackTime = 600000;
+    private long whiteTime = 600000;
+    private long blackTime = 600000;
 
     public Clock(GameController controller, Classic game){
         this.controller = controller;
@@ -27,7 +26,7 @@ public class Clock extends Thread {
     }
 
     private void doCycle(){
-        start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         if (game.whiteTurn){
             try {
                 sleep(200);

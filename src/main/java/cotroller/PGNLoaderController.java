@@ -4,6 +4,6 @@ import model.menu.PGNLoader;
 import view.LoadPGN;
 
 public class PGNLoaderController {
-    PGNLoader pgnLoader;
-    LoadPGN loadPGN;
+    private PGNLoader pgnLoader;
+    private LoadPGN loadPGN;
 }

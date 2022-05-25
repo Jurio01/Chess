@@ -4,6 +4,6 @@ import model.menu.NewGameSelector;
 import view.NewGame;
 
 public class NewGameController {
-    NewGame newGame;
-    NewGameSelector newGameSelector;
+    private NewGame newGame;
+    private NewGameSelector newGameSelector;
 }

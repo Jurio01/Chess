@@ -31,7 +31,9 @@ public class Board extends JFrame {
         try {
              image = ImageIO.read(getClass().getResource("/png/kw.png")); //checkout resources/png/README for information behind the look of the pieces.
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorScreen screen = new ErrorScreen();
+            screen.setVisible(true);
+            screen.setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
         this.setIconImage(image);
         this.setResizable(false);

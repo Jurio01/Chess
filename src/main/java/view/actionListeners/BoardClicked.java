@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BoardClicked implements MouseListener {
-    GameController controller;
+    private final GameController controller;
 
     public BoardClicked(GameController controller){
         this.controller = controller;

@@ -3,5 +3,5 @@ package view;
 import cotroller.HomeController;
 
 public class HomeScreen {
-    HomeController homeController;
+    private HomeController homeController;
 }

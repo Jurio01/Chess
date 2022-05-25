@@ -4,6 +4,6 @@ import model.menu.Home;
 import view.HomeScreen;
 
 public class HomeController {
-    Home home;
-    HomeScreen homeScreen;
+    private Home home;
+    private HomeScreen homeScreen;
 }

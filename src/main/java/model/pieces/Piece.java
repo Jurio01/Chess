@@ -9,12 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class Piece {
-    Tile tile;
-    List<Tile> possibleMoves;
-    boolean check;
-    PieceColor color;
-    String imageName;
-    Classic game;
+    protected Tile tile;
+    protected List<Tile> possibleMoves;
+    protected boolean check;
+    protected PieceColor color;
+    protected String imageName;
+    protected Classic game;
 
     public Piece(Tile tile, PieceColor color, Classic game, String imageName) {
         this.tile = tile;

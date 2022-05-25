@@ -4,6 +4,6 @@ import model.menu.GameModePicker;
 import view.GameMode;
 
 public class GameModeController {
-    GameMode gameMode;
-    GameModePicker gameModePicker;
+    private GameMode gameMode;
+    private GameModePicker gameModePicker;
 }

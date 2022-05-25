@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public class BoardPanel extends JPanel {
     private final Board board;
     public BoardPanel(Board board){
@@ -49,7 +51,9 @@ public class BoardPanel extends JPanel {
                 Image image = ImageIO.read(getClass().getResource("/png/" + imageName));
                 g.drawImage(image.getScaledInstance(64,64,Image.SCALE_SMOOTH),(piece.getTile().getColumn() - 1) * 64, (piece.getTile().getRow() - 8) * (-1) * 64,null);
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorScreen screen = new ErrorScreen();
+                screen.setVisible(true);
+                screen.setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
         }
     }

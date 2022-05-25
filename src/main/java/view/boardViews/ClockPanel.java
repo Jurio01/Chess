@@ -7,8 +7,8 @@ import java.awt.*;
 
 public class ClockPanel extends JPanel {
     private final GameController controller;
-    private String whiteTime;
-    private String blackTime;
+    private final String whiteTime;
+    private final String blackTime;
 
     public ClockPanel(GameController controller){
         this.controller = controller;
