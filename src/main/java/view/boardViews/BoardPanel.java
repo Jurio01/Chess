@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -51,6 +53,7 @@ public class BoardPanel extends JPanel {
                 Image image = ImageIO.read(getClass().getResource("/png/" + imageName));
                 g.drawImage(image.getScaledInstance(64,64,Image.SCALE_SMOOTH),(piece.getTile().getColumn() - 1) * 64, (piece.getTile().getRow() - 8) * (-1) * 64,null);
             } catch (IOException e) {
+                Logger.getAnonymousLogger().log(Level.SEVERE,e.getMessage());
                 ErrorScreen screen = new ErrorScreen();
                 screen.setVisible(true);
                 screen.setDefaultCloseOperation(EXIT_ON_CLOSE);
